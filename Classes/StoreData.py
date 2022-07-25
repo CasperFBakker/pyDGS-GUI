@@ -15,23 +15,31 @@ class Store_Img_data():
         heightabovebed = Calc_HeightAboveBed(self, img.get("model"), img.get("focal_length"), img.get("image_height"), img.get("image_width"), size_pixel)
         img_height = img.get("image_height") * size_pixel
         img_width = img.get("image_width") * size_pixel
+        Latitude, Longitude = Convert_GPS(self, img.get("gps_latitude"), img.get("gps_latitude_ref"), img.get("gps_longitude"), img.get("gps_longitude_ref"))
+        
+        data = {'Image name': filename, 'Pixel size (mm/pixel)': size_pixel, 'Date/time': img.get("datetime_original"), 'Device': img.get("model"), 
+                'Latitude': str(Latitude), 'Longitude': str(Longitude), 'Image height (mm)': img_height, 
+                'Image width (mm)': img_width, 'Heigth above bed (mm)': heightabovebed}
 
-        test = pd.DataFrame([filename, size_pixel, img.get("datetime_original"), img.get("model"), 
-                      img.get("gps_latitude"), img.get("gps_longitude"), img_height, img_width, heightabovebed
-                     ], 
-                     ['Image name', 'Pixel size (mm/pixel)', 'Date/time', 'Device', 
-                      'Latitude', 'Longitude', 'Image height (mm)', 'Image width (mm)', 'Heigth above bed (mm)'])
-        test.to_csv('test.csv')
+        Data = pd.read_csv('data.csv')
 
-        df = pd.read_csv('test.csv')
-        print(df)
+        if filename in Data.values: #pd.DataFrame.isin([filename]).any():
+            tk.messagebox.askquestion(title=':(::(:(:(:(', message='Alreadt exists ')
+        else:
+            temp = pd.DataFrame(data, index=[0])
+            temp.to_csv('temp.csv', index=False)
 
+            
+            merged = pd.concat([temp, Data], axis="rows")
+            merged.to_csv("data.csv", index=False)
+
+        
 def Scale_Img(self, img_path, r_final, coin_type):
-    coin_bank = {"Select Coin Type": 0,"2_Euro": 25.75, "1_Euro": 23.25, "50_Cent": 24.25,
-                "20_Cent": 22.25, "10_Cent": 19.75, "5_Cent": 21.25}
+    coin_vault = {"2_Euro": 25.75, "1_Euro": 23.25, "50_Cent": 24.25,
+                  "20_Cent": 22.25, "10_Cent": 19.75, "5_Cent": 21.25}
 
     dia_coin_pix = r_final * 2 
-    coin_dia_mm = coin_bank[coin_type]
+    coin_dia_mm = coin_vault[coin_type]
     size_pixel = coin_dia_mm / dia_coin_pix # pixel size in mm
 
     image = cv2.imread(img_path, cv2.IMREAD_COLOR) # Read the image 
@@ -48,5 +56,12 @@ def Calc_HeightAboveBed(self, model, focal_length, height, width, size_pixel):
         heightabovebed = (focal_length * img_heigth / 3.4) * size_pixel
     else: 
         heightabovebed = np.nan
-
     return heightabovebed
+
+def Convert_GPS(self, gps_latitude, gps_latitude_ref, gps_longitude, gps_longitude_ref):
+    lat = gps_latitude
+    lon = gps_longitude
+
+    Latitude = (str(int(lat[0]))+"°"+str(int(lat[1]))+"'"+str(lat[2])+'" '+gps_latitude_ref) 
+    Longitude = (str(int(lon[0]))+"°"+str(int(lon[1]))+"'"+str(lon[2])+'" '+gps_longitude_ref) 
+    return Latitude, Longitude

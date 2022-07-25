@@ -18,8 +18,8 @@ class CoinPlots():
         return image_coin
 
     def CropCoinPlot(self, image, y_coin, x_coin, r_coin):
-        crop_image = image[(x_coin - 25 - r_coin): (x_coin + 25 + r_coin),
-                           (y_coin - 25 - r_coin):(y_coin + 25 + r_coin)]
+        crop_image = image[(x_coin - 75 - r_coin): (x_coin + 75 + r_coin),
+                           (y_coin - 75 - r_coin):(y_coin + 75 + r_coin)]
         nx, ny, _ = np.shape(crop_image)
         XCenter = int(nx/2); YCenter = int(ny/2)
         
@@ -81,33 +81,35 @@ def update(self, image, XCenter, YCenter, r_coin, ax, fig, canvas):
 
     setattr(update, 'r_final', (r+r_coin))
 
-def Coin_Dector(self, img_path, ks_blur):
+def Coin_Dector(self, img_path, ks_blur, RadiusWindow, minRadius, maxRadius):
 
     image = img_path
     img = cv2.imread(image, cv2.IMREAD_COLOR) # Read the image 
-    img_og = img.copy() # Make copy of image
+    img_og = img.copy()                              # Make copy of image
     img_og = cv2.cvtColor(img_og, cv2.COLOR_BGR2RGB) # Converting the image to RGB pattern (default = BGR)
 
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # Grayscale image
     img = cv2.medianBlur(img, ks_blur) # Blur image 
 
-    find_coin = moving_r_window(img, RadiusWindow=10)   # find the coin in image
+    find_coin = moving_r_window(img, RadiusWindow, minRadius, maxRadius)   # find the coin in image
     find_coin = np.reshape(find_coin, (1,3))            # remove unused dimension
     pos_coin_rounded = np.uint16(np.around(find_coin))  # rounded position
     [y_coin, x_coin, r_coin]= pos_coin_rounded[0,:] # position of coin and radius of coin (in pixels)
 
     return y_coin, x_coin, r_coin, img_og
 
-def moving_r_window(image, RadiusWindow, minRadius=0, maxRadius=5):
+def moving_r_window(image, RadiusWindow, minRadius, maxRadius):
     coin = 1
-    timeout = time.time() + 15
+    timeout = time.time() + 10
     while np.size(coin) != 3:
         coin = cv2.HoughCircles(image, cv2.HOUGH_GRADIENT, 1, 120, param1=50, param2=30, 
                                         minRadius=minRadius, maxRadius=maxRadius)
         [minRadius, maxRadius] = [minRadius + RadiusWindow, maxRadius + RadiusWindow]
         if time.time() > timeout: # Set timer of 15s, to prevent endless loop
+            tk.messagebox.showwarning(title='Haha Loser!!!! XD gotem', 
+                                      message='Cannot distinguish the coin from image. Recommended: change kernel size of median blur.')
             raise Exception("Cannot distinguish the coin from image."  
-                             "Recommended: change kernel size of median blur.") from None
+                              "Recommended: change kernel size of median blur.") from None
             break
 
     return coin
