@@ -23,8 +23,8 @@ class Store_Img_data():
 
         Data = pd.read_csv('data.csv')
 
-        if filename in Data.values: #pd.DataFrame.isin([filename]).any():
-            tk.messagebox.askquestion(title=':(::(:(:(:(', message='Alreadt exists ')
+        if filename in Data.values:
+            tk.messagebox.askquestion(title=':(::(:(:(:(', message='Already exists ')
         else:
             temp = pd.DataFrame(data, index=[0])
             temp.to_csv('temp.csv', index=False)
