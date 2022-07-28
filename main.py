@@ -49,7 +49,7 @@ class GUI(object):
         self.winframe = tab_1_left_frame_2
         self.CoinVar = StringVar()
         self.coin_bank = {"Select Coin Type": 0,"2 Euro": '2_Euro', "1 Euro": '1_Euro', "50 Cent": '50_Cent',
-                     "20 Cent": '20_Cent', "10 Cent": '10_Cent', "5 Cent": '5_Cent'}
+                          "20 Cent": '20_Cent', "10 Cent": '10_Cent', "5 Cent": '5_Cent'}
         self.CoinType = ttk.OptionMenu(tab_1_left_frame_2, self.CoinVar,  *self.coin_bank, command=self.GetCoinType)
         self.CoinType.grid(row=0, column=0, sticky="nsew")
 
@@ -59,8 +59,6 @@ class GUI(object):
         self.BlurSlide.set(5)
         self.BlurSlide.grid(row=2, column=0)
     
-
-
         self.minR = tk.Scale(tab_1_left_frame_2, from_= 0, to= 150, orient='horizontal', command=self.SelectMinR)
         self.maxR = tk.Scale(tab_1_left_frame_2, from_= 0, to= 150, orient='horizontal', command=self.SelectMaxR)
         self.minR.set(0); self.maxR.set(5) 
