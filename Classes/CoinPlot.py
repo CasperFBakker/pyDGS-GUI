@@ -93,5 +93,5 @@ class CoinPlots(GUI):
         ax.plot([(XCenter+x-r_coin-r), (x+XCenter+r_coin+r)], [(y+YCenter), (y+YCenter)], color="red", linestyle="--")
         ax.plot([(XCenter+x), (x+XCenter)], [(y+YCenter-r_coin-r), (y+YCenter+r_coin+r)], color="red", linestyle="--")
         fig.canvas.draw()
-
+        setattr(CoinPlots.update, 'r_coin', (r_coin))
         setattr(CoinPlots.update, 'r_final', (r+r_coin))

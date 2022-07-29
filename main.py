@@ -111,18 +111,7 @@ class GUI(object):
 
         self.Save_Data = ttk.Button(tab_1_right_frame_3, text="Save") 
         self.Save_Data.grid(row=1, column=0)
-        self.Save_Data.bind("<ButtonRelease-1>", self.Storing_data)
-
-            
-    # def Storing_data(self, *args):
-    #     path = GetInput.GetImgPath()
-    #     coin_type = GetInput.GetCoinType.coin_type
-    #     print(coin_type)
-    #     if hasattr(Cplt.update, 'r_final'):
-    #         Store.Meta_data(self, path, up.r_final, coin_type)
-    #     else:
-    #         Store.Meta_data(self, path, r_coin, coin_type)
-
+        self.Save_Data.bind("<ButtonRelease-1>", Store.Storing_data)
 
 
 
