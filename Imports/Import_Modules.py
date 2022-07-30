@@ -38,9 +38,11 @@ from exif import Image
 
 from Imports.Functions import *
 from Imports.Import_Classes import *
-from Classes.CoinPlot import CoinPlots as Cplt
-from Classes.CoinPlot import update as up
+
 from Classes.CoinPlot import *
+from Classes.CoinPlot import CoinPlots as Cplt
+# from Classes.CoinDector import CoinPlots as CoinDetector
 from Classes.StoreData import Store_Img_data as Store
 
+from Classes.GetInput import GetInput
 
