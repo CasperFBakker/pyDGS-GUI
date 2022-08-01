@@ -62,14 +62,27 @@ class Store_Img_data():
         data = {'Image name': filename, 'Pixel size (mm/pixel)': size_pixel, 'Date/time': img.get("datetime_original"), 'Device': img.get("model"), 
                 'Latitude': str(Latitude), 'Longitude': str(Longitude), 'Image height (mm)': img_height, 
                 'Image width (mm)': img_width, 'Heigth above bed (mm)': heightabovebed}
+        
+        dir_path = os.path.dirname(img_path)
+        dir_name = os.path.basename(dir_path)
+        try: 
+            Data = pd.read_csv("Output data/data_" + dir_name +".csv")
+        except FileNotFoundError:
+            default = pd.read_csv("Output data/data_default.csv")
+            Data = pd.DataFrame.copy(default)
+            Data.to_csv("Output data/data_" + dir_name +".csv", index=False)
+            Data = pd.read_csv("Output data/data_" + dir_name +".csv")
 
-        Data = pd.read_csv('data.csv')
 
         if filename in Data.values:
-            tk.messagebox.askquestion(title=':(::(:(:(:(', message='Already exists ')
+            result = tk.messagebox.askquestion(title=':(::(:(:(:(', message='The data from this image is already stored. Do you want to replace the data?')
+            if result == 'yes':
+                pass
+            else:
+                pass
         else:
             temp = pd.DataFrame(data, index=[0])
-            temp.to_csv('temp.csv', index=False)
+            temp.to_csv('Output data/temp.csv', index=False)
             
             merged = pd.concat([temp, Data], axis="rows")
-            merged.to_csv("data.csv", index=False)
+            merged.to_csv("Output data/data_" + dir_name +".csv", index=False)

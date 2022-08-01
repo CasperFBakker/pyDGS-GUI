@@ -76,11 +76,12 @@ class CoinPlots(GUI):
         self.y_slider.grid(row=3, column=0)
 
         f0.place(x=8, y=10)
+        setattr(CoinPlots.update, 'r_coin', (r_coin))
 
 
 
     def update(self, image, XCenter, YCenter, r_coin, ax, fig, canvas):
-
+        
         r = self.r_slider.get()
         x = self.x_slider.get()
         y = self.y_slider.get()
@@ -93,5 +94,4 @@ class CoinPlots(GUI):
         ax.plot([(XCenter+x-r_coin-r), (x+XCenter+r_coin+r)], [(y+YCenter), (y+YCenter)], color="red", linestyle="--")
         ax.plot([(XCenter+x), (x+XCenter)], [(y+YCenter-r_coin-r), (y+YCenter+r_coin+r)], color="red", linestyle="--")
         fig.canvas.draw()
-        setattr(CoinPlots.update, 'r_coin', (r_coin))
         setattr(CoinPlots.update, 'r_final', (r+r_coin))

@@ -50,15 +50,25 @@ class GUI(object):
         tab_1_right_frame_2.grid(row=2, column=2, padx=10, pady=10, sticky="nsew")
 
         self.WindFrame = tab_1_left_frame_2
-        self.Input = GetInput(self.master, self.WindFrame)
+        self.ImportFrame = tab_1_left_frame
+        self.Input = GetInput(self.master, self.WindFrame, tab_1_left_frame)
         self.PlotFrame = CoinPlots(self.master, tab_1_mid_frame, tab_1_right_frame)
 
         # ------------ tab_1 -----------------
         # ============ Import Image Frame ===============
         # ------------ Import image file ----------------
         self.import_file = ttk.Button(tab_1_left_frame, text="From Files", width="14")
-        self.import_file.grid(row=0, column=1, sticky="nsew")
-        self.import_file.bind("<ButtonRelease-1>", GetInput.Import_Image)
+        self.import_file.grid_columnconfigure(0, weight=1)
+        self.import_file.grid(row=0, column=0, sticky="nsew")
+        self.import_file.bind("<ButtonRelease-1>",  lambda Var: self.Input.Import_Image()) #GetInput.Import_Image)
+        
+        self.nextImg = ttk.Button(tab_1_left_frame, text="Next") 
+        self.nextImg.grid(row=1, column=1)
+        self.nextImg.bind("<ButtonRelease-1>", lambda Var: self.Input.Next_Image(-2))
+
+        self.previousImg = ttk.Button(tab_1_left_frame, text="Previous") 
+        self.previousImg.grid(row=1, column=0)
+        self.previousImg.bind("<ButtonRelease-1>", lambda Var: self.Input.Previous_Image(-2))
 
         # ============ Coin Detection Frame ============
         # ------------ Select Coin Type ------------  

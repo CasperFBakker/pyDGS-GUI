@@ -42,6 +42,7 @@ class CoinDetector():
         global img_og, y_coin, x_coin, r_coin
 
         path = Input.Import_Image.img_path
+        print(path)
         ks_blur = Input.GetBlur.ks_blur
         RadiusWindow = Input.GetRadiusSp.RadiusWindow
         minRadius = Input.SelectMinR.MinR

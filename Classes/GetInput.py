@@ -2,17 +2,78 @@ from Imports.Import_Modules import *
 from main import GUI
 
 class GetInput(GUI):
-    def __init__(self, master, WindFrame):
+    def __init__(self, master, WindFrame, ImpFrame):
         super(GUI,self).__init__()
+        self.ImportFrame = ImpFrame
         self.WindowFrame = WindFrame
-        
-    def Import_Image(self, *args):
+    
+
+    
+    def PrintPath(self):
+        printPath = Text(self.ImportFrame, height = 5, width = 25, bg = "light cyan")
+        printPath.insert(END, os.path.basename(self.img_path))
+        printPath.configure(state=DISABLED)
+        printPath.grid(column=1, row=2)
+
+
+
+    def Import_Image(self):#, *args):
         filetypes = [('Images', '*.png *.jpg *.jpeg *.heif'),
                      ('Any File', '*.*')]
         self.img_path = askopenfilename(title='Open Image file', filetypes=filetypes, initialdir='/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/')
-        if self.img_path:
-            print("Importing:", self.img_path)
         setattr(GetInput.Import_Image, 'img_path', self.img_path)
+        self.PrintPath()
+        
+        self.dir_path = os.path.split(self.img_path)[0] 
+
+        ext = ('.png', '.jpg', '.jpeg', '.heif')
+        self.images_list = []
+        for files in natsorted(os.listdir(self.dir_path)):
+            if files.endswith(ext):
+                self.images_list.append(files)  
+            else:
+                continue
+        self.IndexImage = self.images_list.index(os.path.split(self.img_path)[1]) 
+        setattr(GetInput.Import_Image, 'IndexImage', self.IndexImage)
+
+
+
+    def Next_Image(self, img_nb):
+        if img_nb == -2:
+            index = self.images_list.index(os.path.split(self.img_path)[1])
+            img_nb = index + 1
+
+        self.img_path = self.images_list[img_nb]
+
+        self.PrintPath()
+
+        setattr(GetInput.Import_Image, 'img_path', (self.dir_path + '/' + self.img_path))
+        if (img_nb+1) == len(self.images_list):
+            img_nb = -1
+
+        self.nextImg = ttk.Button(self.ImportFrame, text="Next") 
+        self.nextImg.grid(row=1, column=1)
+        self.nextImg.bind("<ButtonRelease-1>", lambda Var: self.Next_Image(img_nb + 1))
+
+
+
+    def Previous_Image(self, img_nb):
+        if img_nb == -2:
+            index = self.images_list.index(os.path.split(self.img_path)[1])
+            img_nb = index - 1
+
+        self.img_path = self.images_list[img_nb]
+
+        self.PrintPath()
+
+        setattr(GetInput.Import_Image, 'img_path', (self.dir_path + '/' + self.img_path))
+        if (img_nb-1) == -1:
+            img_nb = len(self.images_list)
+
+        self.previousImg = ttk.Button(self.ImportFrame, text="Previous") 
+        self.previousImg.grid(row=1, column=0)
+        self.previousImg.bind("<ButtonRelease-1>", lambda Var: self.Previous_Image(img_nb - 1))
+        
 
     def GetCoinType(self, coin_bank, CoinVar):
         self.coin_type = coin_bank[CoinVar.get()]
