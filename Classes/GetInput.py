@@ -9,11 +9,10 @@ class GetInput(GUI):
     def Import_Image(self, *args):
         filetypes = [('Images', '*.png *.jpg *.jpeg *.heif'),
                      ('Any File', '*.*')]
-        self.img_path = askopenfilename(title='Open Image file', filetypes=filetypes)
+        self.img_path = askopenfilename(title='Open Image file', filetypes=filetypes, initialdir='/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/')
         if self.img_path:
             print("Importing:", self.img_path)
         setattr(GetInput.Import_Image, 'img_path', self.img_path)
-
 
     def GetCoinType(self, coin_bank, CoinVar):
         self.coin_type = coin_bank[CoinVar.get()]
