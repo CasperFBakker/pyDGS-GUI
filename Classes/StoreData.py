@@ -59,30 +59,37 @@ class Store_Img_data():
         img_width = img.get("image_width") * size_pixel
         Latitude, Longitude = Store_Img_data.Convert_GPS(self, img.get("gps_latitude"), img.get("gps_latitude_ref"), img.get("gps_longitude"), img.get("gps_longitude_ref"))
         
-        data = {'Image name': filename, 'Pixel size (mm/pixel)': size_pixel, 'Date/time': img.get("datetime_original"), 'Device': img.get("model"), 
-                'Latitude': str(Latitude), 'Longitude': str(Longitude), 'Image height (mm)': img_height, 
-                'Image width (mm)': img_width, 'Heigth above bed (mm)': heightabovebed}
+        data = filename, size_pixel, img.get("datetime_original"), img.get("model"), str(Latitude), str(Longitude), img_height, img_width, heightabovebed
+        columns = ['Image name', 'Pixel size (mm/pixel)', 'Date/time', 'Device', 'Latitude', 'Longitude', 'Image height (mm)', 'Image width (mm)', 'Heigth above bed (mm)']
         
         dir_path = os.path.dirname(img_path)
         dir_name = os.path.basename(dir_path)
+
+
+        temp = pd.DataFrame([data], columns=columns)
+        temp.to_csv('Output data/temp.csv', index=False)
+
         try: 
-            Data = pd.read_csv("Output data/data_" + dir_name +".csv")
-        except FileNotFoundError:
-            default = pd.read_csv("Output data/data_default.csv")
-            Data = pd.DataFrame.copy(default)
-            Data.to_csv("Output data/data_" + dir_name +".csv", index=False)
-            Data = pd.read_csv("Output data/data_" + dir_name +".csv")
+            DF = pd.read_csv("Output data/data_" + dir_name +".csv")
 
+            if filename in DF.values:
+                result = tk.messagebox.askquestion(title=':(::(:(:(:(', message='The data from this image is already stored. Do you want to replace the data?')
+                if result == 'yes':
+                    temp = pd.DataFrame([data], columns=columns)
+                    merged = pd.concat([temp, DF])
 
-        if filename in Data.values:
-            result = tk.messagebox.askquestion(title=':(::(:(:(:(', message='The data from this image is already stored. Do you want to replace the data?')
-            if result == 'yes':
-                pass
+                    merged = merged.drop_duplicates(subset=['Image name'])
+                    merged.to_csv("Output data/data_" + dir_name +".csv", index=False)
+
+                else:
+                    pass
             else:
-                pass
-        else:
-            temp = pd.DataFrame(data, index=[0])
-            temp.to_csv('Output data/temp.csv', index=False)
-            
-            merged = pd.concat([temp, Data], axis="rows")
-            merged.to_csv("Output data/data_" + dir_name +".csv", index=False)
+                temp = pd.DataFrame([data], columns=columns)
+                merged = pd.concat([temp, DF])
+                merged.to_csv("Output data/data_" + dir_name +".csv", index=False)
+
+        except FileNotFoundError:
+            temp = pd.DataFrame([data], columns=[columns])
+            temp.to_csv("Output data/data_" + dir_name +".csv", index=False)
+
+
