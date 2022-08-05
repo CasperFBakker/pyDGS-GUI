@@ -113,3 +113,7 @@ class GetInput(GUI):
     def GetRadiusSp(self, RadiusVar):
         self.RadiusWindow = RadiusVar.get()
         setattr(GetInput.GetRadiusSp, 'RadiusWindow', self.RadiusWindow)
+
+    def GetScale(self, val):
+        self.Scale = int(val)
+        setattr(GetInput.GetScale, 'Scale', self.Scale)

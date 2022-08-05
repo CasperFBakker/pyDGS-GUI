@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 from matplotlib.patches import Circle
+from matplotlib.gridspec import GridSpec
 
 import tkinter as tk
 from tkinter import *
@@ -44,6 +45,7 @@ from Classes.CoinPlot import *
 from Classes.CoinPlot import CoinPlots as Cplt
 # from Classes.CoinDector import CoinPlots as CoinDetector
 from Classes.StoreData import Store_Img_data as Store
+from Classes.Spectrogram import Spectrogram as Spec
 
 from Classes.GetInput import GetInput
 

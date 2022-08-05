@@ -31,6 +31,12 @@ class GUI(object):
         tab_1.grid(row=0, column=0,sticky='NSEW')
 
         tab_2 = ttk.Frame(self.notebook)
+        tab_2.grid_columnconfigure(0, weight=25)
+        tab_2.grid_columnconfigure(1, weight=50)
+        tab_2.grid_columnconfigure(2, weight=25)
+        tab_2.grid_rowconfigure(1, weight=50)
+        tab_2.grid_rowconfigure(0, weight=1)
+        tab_2.grid(row=0, column=0,sticky='NSEW')
 
         self.notebook.add(tab_1, text="Image Resolution")
         self.notebook.add(tab_2, text="pyDGS: Spectrogram")
@@ -60,7 +66,7 @@ class GUI(object):
         self.import_file = ttk.Button(tab_1_left_frame, text="From Files", width="14")
         self.import_file.grid_columnconfigure(0, weight=1)
         self.import_file.grid(row=0, column=0, sticky="nsew")
-        self.import_file.bind("<ButtonRelease-1>",  lambda Var: self.Input.Import_Image()) #GetInput.Import_Image)
+        self.import_file.bind("<ButtonRelease-1>",  lambda Var: self.Input.Import_Image())
         
         self.nextImg = ttk.Button(tab_1_left_frame, text="Next") 
         self.nextImg.grid(row=1, column=1)
@@ -115,7 +121,50 @@ class GUI(object):
 
 
         # ------------ tab_2 -----------------
+        tab_2_top_frame = ttk.LabelFrame(tab_2, text="Setup pyDGS")
+        tab_2_top_frame.grid(row=0, column=0, columnspan=3,padx=10, pady=10, sticky="nsew")
         
+        tab_2_mid_frame = ttk.LabelFrame(tab_2, text="Plot Power Spectra")
+        tab_2_mid_frame.grid(row=1, column=1, padx=10, pady=10, sticky="nsew")
+
+        tab_2_left_frame = ttk.LabelFrame(tab_2, text="Plot Image")
+        tab_2_left_frame.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
+       
+        tab_2_right_frame = ttk.LabelFrame(tab_2, text="Plot Total?") 
+        tab_2_right_frame.grid(row=1, column=2, padx=10, pady=10, sticky="nsew")
+
+        Spec(self.master, tab_2_left_frame, tab_2_mid_frame, tab_2_right_frame)
+
+
+        self.import_file = ttk.Button(tab_2_top_frame, text="From Files", width="14")
+        self.import_file.grid_columnconfigure(0, weight=1)
+        self.import_file.grid(row=0, column=0, sticky="nsew")
+        self.import_file.bind("<ButtonRelease-1>",  lambda Var: self.Input.Import_Image())
+
+        self.run_dgs = ttk.Button(tab_2_top_frame, text="Run pyDGS", width="14")
+        self.run_dgs.grid(row=2, column=0, sticky="nsew")
+        self.run_dgs.bind("<ButtonRelease-1>", lambda Var: Spec.dgs(self))
+
+        self.Power1 = tk.Scale(tab_2_top_frame, from_=1,to_=31, length = 400, takefocus = 1, orient = tk.HORIZONTAL, command = lambda val: self.Input.GetScale(val))
+        self.Power1.set(5)
+        setattr(Spec.PlotIntensity, 'Scale1', 5)
+        self.Power1.grid(row=0, column=1)
+
+        self.Power2 = tk.Scale(tab_2_top_frame, from_=1,to_=31, length = 400, takefocus = 1, orient = tk.HORIZONTAL, command = lambda val: self.Input.GetScale(val))
+        self.Power2.set(5)
+        setattr(Spec.PlotIntensity, 'Scale2', 5)
+        self.Power2.grid(row=1, column=1)
+
+        self.Power3 = tk.Scale(tab_2_top_frame, from_=1,to_=31, length = 400, takefocus = 1, orient = tk.HORIZONTAL, command = lambda val: self.Input.GetScale(val))
+        self.Power3.set(5)
+        setattr(Spec.PlotIntensity, 'Scale3', 5)
+        self.Power3.grid(row=2, column=1)
+
+        self.Power4 = tk.Scale(tab_2_top_frame, from_=1,to_=31, length = 400, takefocus = 1, orient = tk.HORIZONTAL, command = lambda val: self.Input.GetScale(val))
+        self.Power4.set(5)
+        setattr(Spec.PlotIntensity, 'Scale4', 5)
+        self.Power4.grid(row=3, column=1)
+
 
 def main(): 
     root = ThemedTk(theme="breeze")
