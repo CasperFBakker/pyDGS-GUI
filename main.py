@@ -112,12 +112,11 @@ class GUI(object):
         self.Coin_Detect = ttk.Button(tab_1_left_frame_2, text="Run") 
         self.Coin_Detect.grid(row=7, column=0)
         self.Coin_Detect.bind("<ButtonRelease-1>", CoinDetector.Search_Coin)
-
-
         # =========== Output Text Box =============
         self.Save_Data = ttk.Button(tab_1_right_frame_2, text="Save") 
         self.Save_Data.grid(row=1, column=0)
         self.Save_Data.bind("<ButtonRelease-1>", Store.Storing_data)
+
 
 
         # ------------ tab_2 -----------------
@@ -133,7 +132,7 @@ class GUI(object):
         tab_2_right_frame = ttk.LabelFrame(tab_2, text="Plot Total?") 
         tab_2_right_frame.grid(row=1, column=2, padx=10, pady=10, sticky="nsew")
 
-        Spec(self.master, tab_2_left_frame, tab_2_mid_frame, tab_2_right_frame)
+        Spec(self.master, tab_2_left_frame, tab_2_mid_frame, tab_2_right_frame, tab_2_top_frame)
 
 
         self.import_file = ttk.Button(tab_2_top_frame, text="From Files", width="14")
@@ -145,25 +144,7 @@ class GUI(object):
         self.run_dgs.grid(row=2, column=0, sticky="nsew")
         self.run_dgs.bind("<ButtonRelease-1>", lambda Var: Spec.dgs(self))
 
-        self.Power1 = tk.Scale(tab_2_top_frame, from_=1,to_=31, length = 400, takefocus = 1, orient = tk.HORIZONTAL, command = lambda val: self.Input.GetScale(val))
-        self.Power1.set(5)
-        setattr(Spec.PlotIntensity, 'Scale1', 5)
-        self.Power1.grid(row=0, column=1)
 
-        self.Power2 = tk.Scale(tab_2_top_frame, from_=1,to_=31, length = 400, takefocus = 1, orient = tk.HORIZONTAL, command = lambda val: self.Input.GetScale(val))
-        self.Power2.set(5)
-        setattr(Spec.PlotIntensity, 'Scale2', 5)
-        self.Power2.grid(row=1, column=1)
-
-        self.Power3 = tk.Scale(tab_2_top_frame, from_=1,to_=31, length = 400, takefocus = 1, orient = tk.HORIZONTAL, command = lambda val: self.Input.GetScale(val))
-        self.Power3.set(5)
-        setattr(Spec.PlotIntensity, 'Scale3', 5)
-        self.Power3.grid(row=2, column=1)
-
-        self.Power4 = tk.Scale(tab_2_top_frame, from_=1,to_=31, length = 400, takefocus = 1, orient = tk.HORIZONTAL, command = lambda val: self.Input.GetScale(val))
-        self.Power4.set(5)
-        setattr(Spec.PlotIntensity, 'Scale4', 5)
-        self.Power4.grid(row=3, column=1)
 
 
 def main(): 

@@ -33,8 +33,8 @@ class CoinPlots(GUI):
         return image_coin
 
     def CropCoinPlot(self, image, y_coin, x_coin, r_coin):
-        crop_image = image[(x_coin - 75 - r_coin): (x_coin + 75 + r_coin),
-                           (y_coin - 75 - r_coin):(y_coin + 75 + r_coin)]
+        crop_image = image[(x_coin - 2 - r_coin): (x_coin + 2 + r_coin),
+                           (y_coin - 2 - r_coin):(y_coin + 2 + r_coin)]
         nx, ny, _ = np.shape(crop_image)
         XCenter = int(nx/2); YCenter = int(ny/2)
         
