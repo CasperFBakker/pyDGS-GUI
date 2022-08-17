@@ -50,25 +50,22 @@ class Spectrogram(GUI):
 
         return img
 
-    def PlotSpectrogram(self, img_path, data, freq, line_pos):#, pwr1, pwr2, pwr3, pwr4):
+    def PlotSpectrogram(self, img_path, data, line_pos, pwr1, pwr2, pwr3):
 
         image = cv2.imread(img_path, cv2.IMREAD_COLOR) 
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        freq = freq.T
         nx, ny, _ = np.shape(image)
         if nx>ny:
             image= cv2.transpose(image)
         image = cv2.line(image, [0, line_pos], [len(image[1,:]), line_pos], (0, 255, 0), 10)
     
-    
         fig = plt.figure(figsize=(8,8))
-        fig.add_subplot(411).plot(data[5, :])
-        fig.add_subplot(412).plot(data[30,:])
-        fig.add_subplot(413).plot(data[60,:])
-        fig.add_subplot(414).plot(data[86,:])
+        fig.add_subplot(311).plot(data[line_pos, pwr1, :])
+        fig.add_subplot(312).plot(data[line_pos, pwr2, :])
+        fig.add_subplot(313).plot(data[line_pos, pwr3, :])
 
 
-        fig.suptitle('test title', fontsize=20)
+        fig.suptitle('Spectral power, line position = 1', fontsize=20)
 
         f0 = ttk.Frame(Spectrogram.PowerFrame)
         canvas = FigureCanvasTkAgg(fig, f0)
@@ -76,32 +73,54 @@ class Spectrogram(GUI):
         canvas._tkcanvas.pack(side=LEFT, fill=BOTH, expand=True)
         f0.place(x=0, y=0)
 
-        
-        self.PowerScale1 = tk.Scale(self.TopFrame, from_=1,to_=31, length = 400, takefocus = 1, orient = tk.HORIZONTAL, command = lambda val: self.Input.GetScale(val))
+        _, maxScale, _ = np.shape(data)
+        self.PowerScale1 = tk.Scale(Spectrogram.TopFrame, variable=tk.IntVar(), from_=0,to_=(maxScale - 1), length = 400, takefocus = 1, 
+                                    orient = tk.HORIZONTAL, command = lambda i : Spectrogram.update_Scale(self, data, fig, canvas))
         self.PowerScale1.set(5)
-        self.PowerScale1.grid(row=0, column=1)
+        self.PowerScale1.grid(row=0, column=2)
 
-        self.PowerScale2 = tk.Scale(self.TopFrame, from_=1,to_=31, length = 400, takefocus = 1, orient = tk.HORIZONTAL, command = lambda val: self.Input.GetScale(val))
-        self.PowerScale2.set(5)
-        self.PowerScale2.grid(row=1, column=1)
+        self.PowerScale2 = tk.Scale(Spectrogram.TopFrame, variable=tk.IntVar(), from_=0,to_=(maxScale - 1), length = 400, takefocus = 1, 
+                                    orient = tk.HORIZONTAL, command = lambda i : Spectrogram.update_Scale(self, data, fig, canvas))
+        self.PowerScale2.set(6)
+        self.PowerScale2.grid(row=1, column=2)
 
-        self.PowerScale3 = tk.Scale(self.TopFrame, from_=1,to_=31, length = 400, takefocus = 1, orient = tk.HORIZONTAL, command = lambda val: self.Input.GetScale(val))
-        self.PowerScale3.set(5)
-        self.PowerScale3.grid(row=2, column=1)
+        self.PowerScale3 = tk.Scale(Spectrogram.TopFrame, variable=tk.IntVar(), from_=0,to_=(maxScale - 1), length = 400, takefocus = 1, 
+                                    orient = tk.HORIZONTAL, command = lambda i : Spectrogram.update_Scale(self, data, fig, canvas))
+        self.PowerScale3.set(7)
+        self.PowerScale3.grid(row=2, column=2)
 
-        self.PowerScale4 = tk.Scale(self.TopFrame, from_=1,to_=31, length = 400, takefocus = 1, orient = tk.HORIZONTAL, command = lambda val: self.Input.GetScale(val))
-        self.PowerScale4.set(5)
-        self.PowerScale4.grid(row=3, column=1)
+        self.LinePosScale = tk.Scale(Spectrogram.TopFrame, variable=tk.IntVar(), from_=0,to_=99,length = 400, takefocus = 1, 
+                                     orient = tk.HORIZONTAL, command = lambda i : Spectrogram.update_Scale(self, data, fig, canvas))
+        self.LinePosScale.set(1)
+        self.LinePosScale.grid(row=1, column=1)
 
 
-    def PlotImage(self, img_path, line_pos=100):
+    def update_Scale(self, data, fig, canvas):
+
+        pwr1 = self.PowerScale1.get()    
+        pwr2 = self.PowerScale2.get()    
+        pwr3 = self.PowerScale3.get()    
+        line_pos = self.LinePosScale.get() 
+    
+        fig.clear()
+        fig.add_subplot(311).plot(data[line_pos, pwr1, :])
+        fig.add_subplot(312).plot(data[line_pos, pwr2, :])
+        fig.add_subplot(313).plot(data[line_pos, pwr3, :])
+
+        fig.suptitle(f"Spectral power, line position = {line_pos}", fontsize=20)
+        fig.canvas.draw()
+
+    def PlotImage(self, img_path, line_pos):
         image = cv2.imread(img_path, cv2.IMREAD_COLOR) 
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         
         nx, ny, _ = np.shape(image)
         if nx>ny:
             image= cv2.transpose(image)
-        image = cv2.line(image, [0, line_pos], [len(image[1,:]), line_pos], (0, 255, 0), 10)
+            nx, ny, _ = np.shape(image)
+        lines = np.linspace(1,nx-1,100)
+
+        image = cv2.line(image, [0, int(lines[line_pos])], [len(image[1,:]), int(lines[line_pos])], (0, 255, 0), 10)
         px = 1/plt.rcParams['figure.dpi']
         fig = plt.figure(figsize=(440*px, 300*px))
         fig.add_subplot(111).imshow(image)
@@ -179,18 +198,9 @@ class Spectrogram(GUI):
             P.append(power)
         P = np.array(P)
 
-        Spectrogram.PlotSpectrogram(self, img_path, P, np.arange(0, 4000, 1), 1)
-        Spectrogram.PlotImage(self, img_path)
+        Spectrogram.PlotSpectrogram(self, img_path, P, line_pos=1, pwr1=1, pwr2=30, pwr3=60)
+        Spectrogram.PlotImage(self, img_path, line_pos=99)
         Spectrogram.PlotIntensity(self, original)
 
-
-    def update_Scale():
-
-        pwr1 = GUI.Power1.get()    
-        pwr2 = GUI.Power2.get() 
-        pwr3 = GUI.Power3.get() 
-        pwr4 = GUI.Power4.get() 
-
-        Spectrogram.PlotSpectrogram(img_path, data_cfs, 1, pwr1, pwr2, pwr3, pwr4)
 
  
