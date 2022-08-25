@@ -72,7 +72,7 @@ def run_dgs(image, resolution):
 
     P = []; M = []
     for k in np.linspace(1,nx-1,100):
-        [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(3, np.maximum(nx,ny)/maxscale, 1),  'morl' , .5)
+        [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(np.maximum(nx,ny)/(width*resolution / .1), np.maximum(nx,ny)/(width*resolution / 8), 1),  'morl' , .5)
         period = 1. / frequencies
         power =(abs(cfs)) ** 2
         power = np.mean(np.abs(power), axis=1)/(period**2)
@@ -103,7 +103,7 @@ def run_dgs(image, resolution):
     return pd
 
 
-path_of_the_directory = '/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/08_07_22/Location_7/'
+path_of_the_directory = '/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/08_07_22/Location_1/'
 ext = ('.jpg','.jpeg', '.heif', '.png')
 
 for files in os.listdir(path_of_the_directory):

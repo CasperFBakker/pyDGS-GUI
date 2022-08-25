@@ -145,8 +145,6 @@ class GUI(object):
         self.run_dgs.bind("<ButtonRelease-1>", lambda Var: Spec.dgs(self))
 
 
-
-
 def main(): 
     root = ThemedTk(theme="breeze")
     app = GUI(root)
