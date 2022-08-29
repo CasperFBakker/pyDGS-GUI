@@ -217,7 +217,7 @@ class Spectrogram(GUI):
             P.append(power)
         P = np.array(P)
 
-        Spectrogram.PlotSpectrogram(self, img_path, P, line_pos=1, pwr1=1, pwr2=30, pwr3=60)
+        Spectrogram.PlotSpectrogram(self, img_path, P, line_pos=1, pwr1=1, pwr2=2, pwr3=3)
         Spectrogram.PlotImage(self, img_path, line_pos=1)
         Spectrogram.PlotIntensity(self, original)
         Spectrogram.PlotImshow(self, P, line_pos=1)
