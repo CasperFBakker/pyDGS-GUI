@@ -34,8 +34,8 @@ def standardize(img):
 
     return img
 
-image= "/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/08_07_22/Dried/Location_1_4.jpg"
-resolution = 0.034021407
+image= "/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/08_07_22/Location_1/Loc_1_6.jpg"
+resolution = 0.0515957446808511
 img = cv2.imread(image)
 nxx, nyy, _ = img.shape
 width = max(nxx, nyy)
@@ -71,10 +71,9 @@ original = rescale(region,0,255)
 
 nx, ny = original.shape
 
-
 P = []; M = []
 for k in np.linspace(1,nx-1,100):
-    [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(np.maximum(nx,ny)/(width*resolution / .1), np.maximum(nx,ny)/(width*resolution / 8), 1),  'morl', .5) #cmor10-8
+    [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(np.maximum(nx,ny)/(width*resolution / .1), np.maximum(nx,ny)/(width*resolution / .9), 1),  'morl', .5) #cmor10-1
     period = 1. / frequencies
     power =(abs(cfs)) ** 2
     power = np.mean(np.abs(power), axis=1)/(period**2)
@@ -86,21 +85,99 @@ p = np.mean(np.vstack(P), axis=0)
 p = np.array(p/np.sum(p))
 
 # get real scales by multiplying by resolution (mm/pixel)
-scales = np.array(period)
+scales_1 = np.array(period)
 
-srt = np.sqrt(np.sum(p*((scales-np.mean(M))**2)))
+srt = np.sqrt(np.sum(p*((scales_1-np.mean(M))**2)))
 
 # plt.plot(scales, p,'m', lw=2)
 
-p = p+stats.norm.pdf(scales, np.mean(M), srt/2)
+p = p+stats.norm.pdf(scales_1, np.mean(M), srt/2)
 p = np.hstack([p])
-scales = np.hstack([scales])
+scales_1 = np.hstack([scales_1])
 p = p/np.sum(p)
 x = 0
 # area-by-number to volume-by-number
-r_v = (p*scales**x) / np.sum(p*scales**x) #volume-by-weight proportion
+r_v_1 = (p*scales_1**x) / np.sum(p*scales_1**x) #volume-by-weight proportion
 
-pd_T = np.interp([.05,.1,.16,.25,.3,.5,.75,.84,.9,.95],np.hstack((0,np.cumsum(r_v))), np.hstack((0,scales)) ) * resolution
+P = []; M = []
+for k in np.linspace(1,nx-1,100):
+    [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(np.maximum(nx,ny)/(width*resolution / 1), np.maximum(nx,ny)/(width*resolution / 3.9), 1),  'morl', .5) #cmor10-1.5
+    period = 1. / frequencies
+    power =(abs(cfs)) ** 2
+    power = np.mean(np.abs(power), axis=1)/(period**2)
+    P.append(power)
 
-for i in range(len(pd_T)):
-    print(pd_T[i])
+    M.append(period[np.argmax(power)])
+
+p = np.mean(np.vstack(P), axis=0)
+p = np.array(p/np.sum(p))
+
+# get real scales by multiplying by resolution (mm/pixel)
+scales_2 = np.array(period)
+
+srt = np.sqrt(np.sum(p*((scales_2-np.mean(M))**2)))
+
+# plt.plot(scales, p,'m', lw=2)
+
+p = p+stats.norm.pdf(scales_2, np.mean(M), srt/2)
+p = np.hstack([p])
+scales_2 = np.hstack([scales_2])
+p = p/np.sum(p)
+x = 0
+# area-by-number to volume-by-number
+r_v_2 = (p*scales_2**x) / np.sum(p*scales_2**x) #volume-by-weight proportion
+
+P = []; M = []
+for k in np.linspace(1,nx-1,100):
+    [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(np.maximum(nx,ny)/(width*resolution / 4), np.maximum(nx,ny)/(width*resolution / 8), 1),  'morl', .5) #cmor10-1.9
+    period = 1. / frequencies
+    power =(abs(cfs)) ** 2
+    power = np.mean(np.abs(power), axis=1)/(period**2)
+    P.append(power)
+
+    M.append(period[np.argmax(power)])
+
+p = np.mean(np.vstack(P), axis=0)
+p = np.array(p/np.sum(p))
+
+# get real scales by multiplying by resolution (mm/pixel)
+scales_3 = np.array(period)
+
+srt = np.sqrt(np.sum(p*((scales_3-np.mean(M))**2)))
+
+# plt.plot(scales, p,'m', lw=2)
+
+p = p+stats.norm.pdf(scales_3, np.mean(M), srt/2)
+p = np.hstack([p])
+scales_3 = np.hstack([scales_3])
+p = p/np.sum(p)
+x = 0
+# area-by-number to volume-by-number
+r_v_3 = (p*scales_3**x) / np.sum(p*scales_3**x) #volume-by-weight proportion
+
+r_v_T = np.concatenate((r_v_1, r_v_2, r_v_3))
+r_v_T = r_v_T / 3
+scales_T = np.concatenate((scales_1, scales_2, scales_3))
+
+pd_T = np.interp([.05,.1,.16,.25,.3,.5,.75,.84,.9,.95],np.hstack((0,np.cumsum(r_v_T))), np.hstack((0,scales_T)) ) * resolution
+
+sieve_open = [8, 4, 2, 1, 0.71, 0.5, 0.425, 0.355, 0.3, 0.25, 0.18, 0.125, 0.063]
+sieve_data_1 = [100, 98, 91, 73, 55, 32, 26, 19, 14, 9, 3, 0, 0]
+
+percentiles = [5, 10, 16, 25, 30, 50, 75, 84, 90, 95] 
+
+dgs_data = [0.181454604, 0.292283726, 0.411418319, 0.580388498, 0.673668774, 1.076488632, 1.811835148, 2.327583741, 2.937335338, 3.749554738]
+
+plt.plot(pd_T, percentiles, marker='.')
+plt.plot(sieve_open, sieve_data_1, ls='--', color='black')
+
+
+plt.xscale("log")
+plt.grid(which='major', linewidth=2, linestyle='-')
+plt.grid(which='minor', linewidth=1, linestyle='--')
+plt.yticks(np.arange(0,110, 10), ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'] )
+plt.xticks([0.1, 1, 10], [0.1,1,10])
+plt.xlabel('Grain size d (mm)', fontsize=20)
+plt.ylabel('Percent finer (%)', fontsize=20)
+
+plt.show()

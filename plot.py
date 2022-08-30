@@ -1,6 +1,6 @@
 from Imports.Import_Modules import * 
 
-data = pd.read_csv('Output data/08_07_22/Percentile_og/Percentiles_Location_7.csv')
+data = pd.read_csv('Output data/08_07_22/Percentile_og/Percentiles_Location_5.csv')
 # data = pd.read_csv('Output data/08_07_22/Percentile_new/Percentiles_Location_7.csv')
 data = np.array(data)
 percentiles = [5, 10, 16, 25, 30, 50,  75, 84, 90, 95] 
@@ -17,9 +17,9 @@ sieve_data_7 = [99,98,86,66,60,51,45,35,26,16,6,1,0]
 
 
 plt.subplot(1,1,1)
-plt.plot(sieve_open, sieve_data_2, ls='--', color='black', label='Sieved')
-plt.plot(data[2,1:11], percentiles, ls=':', color='black', label=data[2,11])
-for i in range(0,2):
+plt.plot(sieve_open, sieve_data_5, ls='--', color='black', label='Sieved')
+plt.plot(data[4,1:11], percentiles, ls=':', color='black', label=data[4,11])
+for i in range(0,4):
     plt.plot(data[i,1:11], percentiles, marker='.', label=data[i,11])
 plt.legend()
 plt.xscale("log")
@@ -72,7 +72,7 @@ plt.ylabel('Percent finer (%)', fontsize=20)
 # plt.yticks(np.arange(0,110, 10), ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'] )
 # plt.xticks([0.1, 1, 10], [0.1,1,10])
 
-plt.suptitle('Location 7', fontsize=20)
+plt.suptitle('Location 5', fontsize=20)
 
 
 plt.show()
