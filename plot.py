@@ -1,8 +1,9 @@
 from Imports.Import_Modules import * 
 
-data = pd.read_csv('Output data/08_07_22/Percentile_og/Percentiles_Location_5.csv')
+data = pd.read_csv('Output data/08_07_22/Percentile_og/Percentiles_Location_1.csv')
 # data = pd.read_csv('Output data/08_07_22/Percentile_new/Percentiles_Location_7.csv')
 data = np.array(data)
+
 percentiles = [5, 10, 16, 25, 30, 50,  75, 84, 90, 95] 
 sieve_open = [8, 4, 2, 1, 0.71, 0.5, 0.425, 0.355, 0.3, 0.25, 0.18, 0.125, 0.063]
 sieve_data_1 = [100, 98, 91, 73, 55, 32, 26, 19, 14, 9, 3, 0, 0]
@@ -14,13 +15,14 @@ sieve_data_6 = [99,96,92,88,85,77,72,62,50,33,11,2,0]
 sieve_data_7 = [99,98,86,66,60,51,45,35,26,16,6,1,0]
 
 
-
-
 plt.subplot(1,1,1)
-plt.plot(sieve_open, sieve_data_5, ls='--', color='black', label='Sieved')
-plt.plot(data[4,1:11], percentiles, ls=':', color='black', label=data[4,11])
+plt.plot(sieve_open, sieve_data_1, ls='--', color='black', label='Sieved')
 for i in range(0,4):
-    plt.plot(data[i,1:11], percentiles, marker='.', label=data[i,11])
+    percentile = [0.05, 0.1, 0.16, 0.3, 0.5, 0.75, 0.84, 0.9, 0.95]
+    datas= []
+    for j in range(1,11):
+        datas[i] = (data[i,j]**(-0.47))* percentile[i]
+    plt.plot(datas, percentiles, marker='.', label=data[i,11])
 plt.legend()
 plt.xscale("log")
 plt.grid(which='major', linewidth=2, linestyle='-')
