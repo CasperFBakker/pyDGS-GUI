@@ -1,177 +1,31 @@
-import numpy as np
-import sys, os
-from imageio.v2 import imread
-import pywt
-from tqdm import tqdm
-from skimage.restoration import denoise_wavelet, estimate_sigma
-from functools import partial
-# rescale_sigma=True required to silence deprecation warnings
-_denoise_wavelet = partial(denoise_wavelet, rescale_sigma=True)
-import scipy.stats as stats
-from scipy.stats import gmean
-import cv2
-import matplotlib.pyplot as plt
+from Imports.Import_Modules import * 
 
-# =========================================================
-def rescale(dat,mn,mx):
-    """
-    rescales an input dat between mn and mx
-    """
-    m = min(dat.flatten())
-    M = max(dat.flatten())
-    return (mx-mn)*(dat-m)/(M-m)+mn
+data = pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/08_07_22/Corrected_Loc1/Data_Location_1.csv')
+data = np.array(data)
 
-##====================================
-def standardize(img):
-    img = np.array(img)
-    #standardization using adjusted standard deviation
-    N = np.shape(img)[0] * np.shape(img)[1]
-    s = np.maximum(np.std(img), 1.0/np.sqrt(N))
-    m = np.mean(img)
-    img = (img - m) / s
-    img = rescale(img, 0, 1)
-    del m, s, N
-
-    return img
-
-image= "/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/08_07_22/Location_1/Loc_1_6.jpg"
-resolution = 0.0515957446808511
-img = cv2.imread(image)
-nxx, nyy, _ = img.shape
-width = max(nxx, nyy)
-maxscale= width*resolution / 8
-
-x= 0
-verbose = 1
-
-im = imread(image)   # read the image straight with imread
-im = np.squeeze(im)  # squeeze singleton dimensions
-if len(np.shape(im))>3:
-    im = im[:, :, :3]            # only keep the first 3 bands
-
-if len(np.shape(im))==3: # if rgb, convert to grey
-    im = (0.299 * im[:,:,0] + 0.5870*im[:,:,1] + 0.114*im[:,:,2]).astype('uint8')
-
-nx,ny = np.shape(im)
-if nx>ny:
-    im=im.T
-
-im = standardize(im)
-
-filter=False
-
-if filter:
-    sigma_est = estimate_sigma(im, multichannel=False, average_sigmas=True)
-    region = denoise_wavelet(im, multichannel=False, rescale_sigma=True,
-                                method='VisuShrink', mode='soft', sigma=sigma_est*2)
-else:
-    region = im.copy()
-
-original = rescale(region,0,255)
-
-nx, ny = original.shape
-
-P = []; M = []
-for k in np.linspace(1,nx-1,100):
-    [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(np.maximum(nx,ny)/(width*resolution / .1), np.maximum(nx,ny)/(width*resolution / .9), 1),  'morl', .5) #cmor10-1
-    period = 1. / frequencies
-    power =(abs(cfs)) ** 2
-    power = np.mean(np.abs(power), axis=1)/(period**2)
-    P.append(power)
-
-    M.append(period[np.argmax(power)])
-
-p = np.mean(np.vstack(P), axis=0)
-p = np.array(p/np.sum(p))
-
-# get real scales by multiplying by resolution (mm/pixel)
-scales_1 = np.array(period)
-
-srt = np.sqrt(np.sum(p*((scales_1-np.mean(M))**2)))
-
-# plt.plot(scales, p,'m', lw=2)
-
-p = p+stats.norm.pdf(scales_1, np.mean(M), srt/2)
-p = np.hstack([p])
-scales_1 = np.hstack([scales_1])
-p = p/np.sum(p)
-x = 0
-# area-by-number to volume-by-number
-r_v_1 = (p*scales_1**x) / np.sum(p*scales_1**x) #volume-by-weight proportion
-
-P = []; M = []
-for k in np.linspace(1,nx-1,100):
-    [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(np.maximum(nx,ny)/(width*resolution / 1), np.maximum(nx,ny)/(width*resolution / 3.9), 1),  'morl', .5) #cmor10-1.5
-    period = 1. / frequencies
-    power =(abs(cfs)) ** 2
-    power = np.mean(np.abs(power), axis=1)/(period**2)
-    P.append(power)
-
-    M.append(period[np.argmax(power)])
-
-p = np.mean(np.vstack(P), axis=0)
-p = np.array(p/np.sum(p))
-
-# get real scales by multiplying by resolution (mm/pixel)
-scales_2 = np.array(period)
-
-srt = np.sqrt(np.sum(p*((scales_2-np.mean(M))**2)))
-
-# plt.plot(scales, p,'m', lw=2)
-
-p = p+stats.norm.pdf(scales_2, np.mean(M), srt/2)
-p = np.hstack([p])
-scales_2 = np.hstack([scales_2])
-p = p/np.sum(p)
-x = 0
-# area-by-number to volume-by-number
-r_v_2 = (p*scales_2**x) / np.sum(p*scales_2**x) #volume-by-weight proportion
-
-P = []; M = []
-for k in np.linspace(1,nx-1,100):
-    [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(np.maximum(nx,ny)/(width*resolution / 4), np.maximum(nx,ny)/(width*resolution / 8), 1),  'morl', .5) #cmor10-1.9
-    period = 1. / frequencies
-    power =(abs(cfs)) ** 2
-    power = np.mean(np.abs(power), axis=1)/(period**2)
-    P.append(power)
-
-    M.append(period[np.argmax(power)])
-
-p = np.mean(np.vstack(P), axis=0)
-p = np.array(p/np.sum(p))
-
-# get real scales by multiplying by resolution (mm/pixel)
-scales_3 = np.array(period)
-
-srt = np.sqrt(np.sum(p*((scales_3-np.mean(M))**2)))
-
-# plt.plot(scales, p,'m', lw=2)
-
-p = p+stats.norm.pdf(scales_3, np.mean(M), srt/2)
-p = np.hstack([p])
-scales_3 = np.hstack([scales_3])
-p = p/np.sum(p)
-x = 0
-# area-by-number to volume-by-number
-r_v_3 = (p*scales_3**x) / np.sum(p*scales_3**x) #volume-by-weight proportion
-
-r_v_T = np.concatenate((r_v_1, r_v_2, r_v_3))
-r_v_T = r_v_T / 3
-scales_T = np.concatenate((scales_1, scales_2, scales_3))
-
-pd_T = np.interp([.05,.1,.16,.25,.3,.5,.75,.84,.9,.95],np.hstack((0,np.cumsum(r_v_T))), np.hstack((0,scales_T)) ) * resolution
-
+percentiles = [5, 10, 16, 25, 30, 50,  75, 84, 90, 95] 
 sieve_open = [8, 4, 2, 1, 0.71, 0.5, 0.425, 0.355, 0.3, 0.25, 0.18, 0.125, 0.063]
 sieve_data_1 = [100, 98, 91, 73, 55, 32, 26, 19, 14, 9, 3, 0, 0]
 
-percentiles = [5, 10, 16, 25, 30, 50, 75, 84, 90, 95] 
 
-dgs_data = [0.181454604, 0.292283726, 0.411418319, 0.580388498, 0.673668774, 1.076488632, 1.811835148, 2.327583741, 2.937335338, 3.749554738]
+test4 = [100,	98.03742039,	86.50478147,	54.62367944, 39.3832256,	27.29937681,	22.87518019,	13.77354752, 11.0635036, 5.912429852, 1.870618875, 0.492045907, 0.027050264]
+test5 = [100,	97.91915857,	87.87140515	,57.6366499,	42.32830503	,29.62617099,24.80889593,	14.88713785, 11.89542279, 6.313682975, 1.962224645, 0.499545384,	0.020401643]
+test6 = [100, 97.749458,	85.720625,	64.42260906, 48.08843951, 29.29367, 24.586666, 21.63884949, 12.33749639, 6.635463912, 2.110120993, 0.568223161, 0.042683111]
+test7 = [100,	99.33303457,	94.88778758,	68.12689832,	51.1802888,	36.37036607,	30.61019488	,18.40931733,14.68263386, 7.736628744, 2.360307627, 0.602593609, 0.036187792]
+test9 = [100,	98.21427663,	89.41588979	,60.91013688,	45.58005154,	32.6890377,	27.72012729,	16.86195956	,13.63983225, 7.336113877, 2.331340378, 0.612870904, 0.031412156]
+#test15 = [100, 96.33211434, 79.66298505, 49.47298694, 35.7032497, 24.70939609, 20.66571499, 23.96702411, 13.71528599, 7.426824419, 2.383277287, 0.62931437, 0.031850385]
+testdry = [100, 97.87438321,85.85206557	,52.41154005	,36.66916928,	24.34635003,	19.92316888	,11.68049418	,9.161883091, 4.782885766, 1.461140507, 0.378269059, 0.021486793]
+plt.subplot(1,1,1)
+plt.plot(sieve_open, sieve_data_1, ls='--', color='black', label='Sieved')
 
-plt.plot(pd_T, percentiles, marker='.')
-plt.plot(sieve_open, sieve_data_1, ls='--', color='black')
+plt.plot(sieve_open, test4, marker='.', label='Top (10.3 cm)')
+plt.plot(sieve_open, test5, marker='.', label='Top (6.35 cm)')
+plt.plot(sieve_open, test7, marker='.', label='Scraped top (11.3 cm)')
+plt.plot(sieve_open, test9, marker='.', label='Top auto-hdr (9.44 cm)')
+#plt.plot(sieve_open, test15, marker='.')
+plt.plot(sieve_open, testdry, marker='.', label='Dried')
 
-
+plt.legend()
 plt.xscale("log")
 plt.grid(which='major', linewidth=2, linestyle='-')
 plt.grid(which='minor', linewidth=1, linestyle='--')
@@ -179,5 +33,10 @@ plt.yticks(np.arange(0,110, 10), ['0', '10', '20', '30', '40', '50', '60', '70',
 plt.xticks([0.1, 1, 10], [0.1,1,10])
 plt.xlabel('Grain size d (mm)', fontsize=20)
 plt.ylabel('Percent finer (%)', fontsize=20)
+plt.title('Location 1: Corrected Proffitt', fontsize=20)
+
+
+
+# plt.suptitle('Location 1', fontsize=20)
 
 plt.show()
