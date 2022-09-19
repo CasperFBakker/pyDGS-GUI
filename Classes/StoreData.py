@@ -52,8 +52,9 @@ class Store_Img_data():
             img = Image(img_file)
 
         filename = os.path.basename(img_path)
-
+        
         height, width, size_pixel = Store_Img_data.Scale_Img(self, img_path, r_coin, coin_type)
+
         heightabovebed = Store_Img_data.Calc_HeightAboveBed(self, img.get("model"), img.get("focal_length"), img.get("image_height"), img.get("image_width"), size_pixel)
         img_height = img.get("image_height") * size_pixel
         img_width = img.get("image_width") * size_pixel
