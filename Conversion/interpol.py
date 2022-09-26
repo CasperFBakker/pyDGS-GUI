@@ -4,9 +4,12 @@ import matplotlib.pyplot as plt
 
 data_line1 = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/08_07_22/Line_1/Stats_Line_1.csv'))
 data_line2 = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/08_07_22/Line_2/Stats_Line_2.csv'), dtype='float64')
-GrainSize = np.array([0, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8])
-# D_nb = np.array([95]) # 10, 16, 25, 30, 50, 75, 84, 90, 95
-# for i in range(len(data)):
+
+# data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/08_07_22/Percentile_Sieve.csv'), dtype='float64')
+# GrainSize = np.array([0, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8])
+# D_nb = np.array([5]) # 10, 16, 25, 30, 50, 75, 84, 90, 95
+
+# for i in range(0,7):
 #     print(np.interp(D_nb, data[i,:], GrainSize)[0])
 
 steps_line1 = np.arange(0, 190, 5)
