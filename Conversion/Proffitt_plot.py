@@ -9,6 +9,7 @@ data_Sieve = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Outpu
 data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/08_07_22/Sample_Photos/Percentile_Sample_subLoc4.csv'))
 data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/08_07_22/Sample_Photos/Percentile_Sample_TrendAll.csv'))
 
+#data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/08_07_22/Line_2/Percentile_Line_2.csv'))
 #data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/08_07_22/DiplasSutherland/Percentiles_All_NewTrends.csv'))
 data_filt = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/08_07_22/DiplasSutherland/Percentiles_All_retryCor_Filt.csv'))
 data_cor = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/08_07_22/Proffitt Percentage/MinScale_3px/Corrected/Percentages_Location_2.csv'))

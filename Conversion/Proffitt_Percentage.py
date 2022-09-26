@@ -21,7 +21,7 @@ def GetImageRes(img_path):
     dir_name = os.path.basename(dir_path)
 
     try:
-        DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS GUI/Output data/data_" + dir_name +".csv")
+        DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/data_" + dir_name +".csv")
         row = DataFrame[DataFrame["Image name"] == filename].index[0]
         resolution = DataFrame.at[row, 'Pixel size (mm/pixel)']
     except FileNotFoundError:
@@ -56,7 +56,7 @@ def standardize(img):
     return img
 
 
-path_of_the_directory = '/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/08_07_22/Sample_7/'
+path_of_the_directory = '/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/08_07_22/Line_1/'
 
 for files in os.listdir(path_of_the_directory):
     if files.endswith('.jpg'):
