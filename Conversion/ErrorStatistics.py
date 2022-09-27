@@ -16,11 +16,24 @@ def MAE(Sieve_vals, DGS_vals):
     return meanAbsErr
 
 
-data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/08_07_22/Sample_Photos/Location_1/Stats_Loc_1.csv'))
-sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/08_07_22/Stats_Sieve.csv'))
+data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/08_07_22/Sample_Photos/Filtered/Stats_Loc_7_MultiTrend.csv'))
+sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/08_07_22/Stats_Sieve.csv'))
+for i in range(1, 11):
+    test = [sieve_data[0,i] for j in range(len(data))]
+    print(RMSE(test, data[1,i]))
+    print(MAE(test, data[:,i]))
+print('\n')
 
-for i in range(len(data)):
-    print(data[i, 0])
-    print(RMSE(sieve_data[0,1:11], data[i, 1:11]))
-    print(MAE(sieve_data[0,1:11], data[i, 1:11]))
-    print('\n')
+data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/08_07_22/Sample_Photos/Filtered/Stats_Loc_7_MultiTrend_Sub4.csv'))
+sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/08_07_22/Stats_Sieve.csv'))
+for i in range(1, 11):
+    test = [sieve_data[0,i] for j in range(len(data))]
+    print(RMSE(test, data[1,i]))
+    print(MAE(test, data[:,i]))
+print('\n') 
+data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/08_07_22/Sample_Photos/Filtered/Stats_Loc_7_AllTrend.csv'))
+sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/08_07_22/Stats_Sieve.csv'))
+for i in range(1, 11):
+    test = [sieve_data[0,i] for j in range(len(data))]
+    print(RMSE(test, data[1,i]))
+    print(MAE(test, data[:,i]))
