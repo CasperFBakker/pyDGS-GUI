@@ -2,9 +2,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-data_Multi = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/08_07_22/Sample_Photos/Error_Analysis/Error_PercentileFilt_MultiTrend.csv'))
-data_Sub = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/08_07_22/Sample_Photos/Error_Analysis/Error_PercentileFilt_MultiTrend_Sub4.csv'))
-data_All = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/08_07_22/Sample_Photos/Error_Analysis/Error_PercentileFilt_AllTrend.csv'))
+data_Multi = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/08_07_22/Sample_Photos/Error_Analysis/Error_PercentileFilt_MultiTrend.csv'))
+data_Sub = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/08_07_22/Sample_Photos/Error_Analysis/Error_PercentileFilt_MultiTrend_Sub4.csv'))
+data_All = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/08_07_22/Sample_Photos/Error_Analysis/Error_PercentileFilt_AllTrend.csv'))
 
 plt.subplot(2,3,1)
 plt.plot(np.arange(0, 10, 1),data_Multi[0,1:], marker='o')
