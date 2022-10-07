@@ -18,7 +18,7 @@ class GetInput(GUI):
 
 
     def Import_Image(self):#, *args):
-        filetypes = [('Images', '*.png *.jpg *.jpeg *.heif'),
+        filetypes = [('Images', '*.png *.jpg *.JPG *.jpeg *.heif'),
                      ('Any File', '*.*')]
         self.img_path = askopenfilename(title='Open Image file', filetypes=filetypes, initialdir='/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/')
         setattr(GetInput.Import_Image, 'img_path', self.img_path)
@@ -26,7 +26,7 @@ class GetInput(GUI):
         
         self.dir_path = os.path.split(self.img_path)[0] 
 
-        ext = ('.png', '.jpg', '.jpeg', '.heif')
+        ext = ('.png', '.jpg', '.JPG','.jpeg', '.heif')
         self.images_list = []
         for files in natsorted(os.listdir(self.dir_path)):
             if files.endswith(ext):

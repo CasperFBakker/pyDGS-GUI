@@ -25,6 +25,9 @@ class Store_Img_data():
         if model == 'SM-A515F':
             img_heigth = min(height, width)
             heightabovebed = (focal_length * img_heigth / 3.4) * size_pixel
+        elif model == 'Canon EOS 1100D':
+            img_heigth = min(height, width)
+            heightabovebed = (focal_length * img_heigth / 22.2) * size_pixel
         else: 
             heightabovebed = np.nan
         return heightabovebed
@@ -54,15 +57,24 @@ class Store_Img_data():
         filename = os.path.basename(img_path)
         
         height, width, size_pixel = Store_Img_data.Scale_Img(self, img_path, r_coin, coin_type)
+ 
+        if img.get("model") == 'Canon EOS 1100D':
+            img_height = img.get("pixel_y_dimension") * size_pixel
+            img_width = img.get("pixel_x_dimension")* size_pixel
 
-        heightabovebed = Store_Img_data.Calc_HeightAboveBed(self, img.get("model"), img.get("focal_length"), img.get("image_height"), img.get("image_width"), size_pixel)
-        img_height = img.get("image_height") * size_pixel
-        img_width = img.get("image_width") * size_pixel
-        Latitude, Longitude = Store_Img_data.Convert_GPS(self, img.get("gps_latitude"), img.get("gps_latitude_ref"), img.get("gps_longitude"), img.get("gps_longitude_ref"))
-        
-        data = filename, size_pixel, img.get("datetime_original"), img.get("model"), str(Latitude), str(Longitude), img_height, img_width, heightabovebed
-        columns = ['Image name', 'Pixel size (mm/pixel)', 'Date/time', 'Device', 'Latitude', 'Longitude', 'Image height (mm)', 'Image width (mm)', 'Heigth above bed (mm)']
-        
+            heightabovebed = Store_Img_data.Calc_HeightAboveBed(self, img.get("model"), img.get("focal_length"), img.get("pixel_y_dimension"), img.get("pixel_x_dimension"), size_pixel)
+            data = filename, size_pixel, img.get("datetime"), img.get("model"), 'None', 'None', img_height, img_width, heightabovebed
+            columns = ['Image name', 'Pixel size (mm/pixel)', 'Date/time', 'Device', 'Latitude', 'Longitude', 'Image height (mm)', 'Image width (mm)', 'Heigth above bed (mm)']
+        else:
+            img_height = img.get("image_height") * size_pixel
+            img_width = img.get("image_width") * size_pixel
+            heightabovebed = Store_Img_data.Calc_HeightAboveBed(self, img.get("model"), img.get("focal_length"), img.get("image_height"), img.get("image_width"), size_pixel)
+            Latitude, Longitude = Store_Img_data.Convert_GPS(self, img.get("gps_latitude"), img.get("gps_latitude_ref"), img.get("gps_longitude"), img.get("gps_longitude_ref"))
+            
+            data = filename, size_pixel, img.get("datetime_original"), img.get("model"), str(Latitude), str(Longitude), img_height, img_width, heightabovebed
+            columns = ['Image name', 'Pixel size (mm/pixel)', 'Date/time', 'Device', 'Latitude', 'Longitude', 'Image height (mm)', 'Image width (mm)', 'Heigth above bed (mm)']
+            
+
         dir_path = os.path.dirname(img_path)
         dir_name = os.path.basename(dir_path)
 
