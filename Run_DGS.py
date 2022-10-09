@@ -1,24 +1,29 @@
-import numpy as np
-import sys, os
-from imageio.v2 import imread
-import pywt
-from tqdm import tqdm
-from skimage.restoration import denoise_wavelet, estimate_sigma
+import os
+import sys
 from functools import partial
+
+import numpy as np
+import pandas as pd
+import pywt
+from imageio.v2 import imread
+from skimage.restoration import denoise_wavelet, estimate_sigma
+from tqdm import tqdm
+
 # rescale_sigma=True required to silence deprecation warnings
 _denoise_wavelet = partial(denoise_wavelet, rescale_sigma=True)
-import scipy.stats as stats
-from scipy.stats import gmean
+import tkinter as tk
+from datetime import datetime
+from random import uniform
+from time import sleep
+from tkinter import messagebox
+
 import cv2
 import matplotlib.pyplot as plt
 import pandas as pd
-import tkinter as tk
-import tkinter as tk
-from tkinter import messagebox
-from datetime import datetime
-from time import sleep
-from tqdm import tqdm 
-from random import uniform
+import scipy.stats as stats
+from scipy.stats import gmean
+from tqdm import tqdm
+
 start_time = datetime.now()
 # =========================================================
 def GetImageRes(img_path):
@@ -31,6 +36,10 @@ def GetImageRes(img_path):
         row = DataFrame[DataFrame["Image name"] == filename].index[0]
         resolution = DataFrame.at[row, 'Pixel size (mm/pixel)']
     except FileNotFoundError:
+        DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/Image_data/data_" + dir_name +".csv")
+        row = DataFrame[DataFrame["Image name"] == filename].index[0]
+        resolution = DataFrame.at[row, 'Pixel size (mm/pixel)']
+    else:
         resolution = 1
     return resolution
 
@@ -106,7 +115,7 @@ def Store_Percentile(path_of_the_directory, Image_Name, Percentile, Description)
 # =========================================================
 def Store_Percentage(path_of_the_directory, Image_Name, Percentage, Description):          
 
-        data = Image_Name, Percentage[0], Percentage[1], Percentage[2], Percentage[3], Percentage[4], Percentage[5], Percentage[6], Percentage[7], Percentage[8], Percentage[9], Percentage[10], Percentage[11], Percentage[12], Percentage[13], 
+        data = Image_Name, Percentage[0], Percentage[1], Percentage[2], Percentage[3], Percentage[4], Percentage[5], Percentage[6], Percentage[7], Percentage[8], Percentage[9], Percentage[10], Percentage[11], Percentage[12], Percentage[13] 
         columns = ['Image name', '0 mm', '0.063 mm', '0.125 mm', '0.180 mm', '0.250 mm', '0.300 mm', '0.355 mm', '0.425 mm', '0.500 mm', '0.710 mm', '1 mm', '2 mm', '4 mm', '8 mm']
                 
         dir_path = os.path.dirname(path_of_the_directory)
@@ -220,8 +229,8 @@ for files in os.listdir(path_of_the_directory):
         x = 0
         # area-by-number to volume-by-number
         r_v = (p*scales**x) / np.sum(p*scales**x) #volume-by-weight proportion
-        pd = np.interp([.05,.1,.16,.25,.3,.5,.75,.84,.9,.95],np.hstack((0,np.cumsum(r_v))), np.hstack((0,scales)) )
-        print(pd)
+        pp = np.interp([.05,.1,.16,.25,.3,.5,.75,.84,.9,.95],np.hstack((0,np.cumsum(r_v))), np.hstack((0,scales)) )
+        print(pp)
         
         a = (scales*resolution)
         minSz = np.array([0, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8])
