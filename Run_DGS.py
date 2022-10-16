@@ -39,8 +39,6 @@ def GetImageRes(img_path):
         DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/Image_data/data_" + dir_name +".csv")
         row = DataFrame[DataFrame["Image name"] == filename].index[0]
         resolution = DataFrame.at[row, 'Pixel size (mm/pixel)']
-    else:
-        resolution = 1
     return resolution
 
 # =========================================================
@@ -169,8 +167,23 @@ while answer == False:
     else: 
         print("please answer with y or n")
 print('____________________________________________________________________________________________________________________')
+Correction = False 
+
+while Correction == False:
+    save_Correction = input('Do you want to use the multi-trend correction? (y/n) ')
+
+    if save_Correction == "y":
+        print("Correction will be preformed")
+        Correction = True     
+    elif save_Correction == "n":
+        print("No correction is done")
+        Correction = True
+    else: 
+        print("please answer with y or n")
+
+print('____________________________________________________________________________________________________________________')
 Description_Data = input('Give a description for stored data: ')
-print("The data will be stored as: /Percentile" + dir_name + "_" + Description_Data + ".csv")
+print("The data will be stored as: /..._" + dir_name + "_" + Description_Data + ".csv")
 print('____________________________________________________________________________________________________________________')
 
 
@@ -203,10 +216,9 @@ for files in os.listdir(path_of_the_directory):
         original = rescale(region,0,255)
 
         nx, ny = original.shape
-
         P = []; M = []
         for k in tqdm(np.linspace(1,nx-1,100)):
-            [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(3, np.maximum(nx,ny)/(width*resolution / 12), 1),  'morl', .5) 
+            [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(5, np.maximum(nx,ny)/(width*resolution / 8), 0.1),  'morl', .5) 
             period = 1. / frequencies
             power =(abs(cfs)) ** 2
             power = np.mean(np.abs(power), axis=1)/(period**2)
@@ -229,9 +241,7 @@ for files in os.listdir(path_of_the_directory):
         x = 0
         # area-by-number to volume-by-number
         r_v = (p*scales**x) / np.sum(p*scales**x) #volume-by-weight proportion
-        pp = np.interp([.05,.1,.16,.25,.3,.5,.75,.84,.9,.95],np.hstack((0,np.cumsum(r_v))), np.hstack((0,scales)) )
-        print(pp)
-        
+
         a = (scales*resolution)
         minSz = np.array([0, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8])
         maxSz = np.array([0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8, 12])
@@ -245,25 +255,25 @@ for files in os.listdir(path_of_the_directory):
             Store_Percentage(path_of_the_directory, files, percentage, Description_Data)
     
         for index, value in enumerate(minSz):
-            if value/resolution < 3:
+            if (value/resolution) < 3:
                 percentage[index] = np.nan
             else:
                 pass
 
-        C_s = 48.967
-        P_s = 2.0318
-        C_m = 0.408
-        P_m = -1.536
-        C_l = 0.4788
-        P_l = -0.03
+        C_s = 191.13808985413237
+        P_s = 2.804953092790458
+        C_m = 0.1854802814657743
+        P_m = -2.1493016950684303
+        C_l = 0.3530984202702832
+        P_l = 1.887249670551427
 
         first_step = []
         
         for index, value in enumerate(percentage):
             if value != 0:
-                if minSz[index] <=0.180:
+                if minSz[index] <=0.250:
                     first_step.append(value*(C_s * pow(minSz[index], P_s)))
-                elif minSz[index] > 0.180 and  minSz[index] < 1:
+                elif minSz[index] > 0.250 and  minSz[index] < 1:
                     first_step.append(value*(C_m * pow(minSz[index], P_m)))
                 elif minSz[index] >= 1:
                     first_step.append(value*(C_l * pow(minSz[index], P_l)))
@@ -277,7 +287,8 @@ for files in os.listdir(path_of_the_directory):
 
         Percentiles = Percentage2Percentile(Corrected_Percentage)
 
-        Store_Percentile(path_of_the_directory, files, Percentiles, Description_Data)
+        if save_Correction == "y":
+            Store_Percentile(path_of_the_directory, files, Percentiles, Description_Data)
     else:
         continue
 
