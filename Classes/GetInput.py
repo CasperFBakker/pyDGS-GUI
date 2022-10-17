@@ -10,10 +10,10 @@ class GetInput(GUI):
 
     
     def PrintPath(self):
-        printPath = Text(self.ImportFrame, height = 5, width = 25, bg = "light cyan")
+        printPath = Text(self.ImportFrame, height = 2, width = 14, bg = "light gray")
         printPath.insert(END, os.path.basename(self.img_path))
         printPath.configure(state=DISABLED)
-        printPath.grid(column=1, row=2)
+        printPath.grid(column=3, row=1)
 
 
 
@@ -52,7 +52,7 @@ class GetInput(GUI):
             img_nb = -1
 
         self.nextImg = ttk.Button(self.ImportFrame, text="Next") 
-        self.nextImg.grid(row=1, column=1)
+        self.nextImg.grid(row=4, column=4)
         self.nextImg.bind("<ButtonRelease-1>", lambda Var: self.Next_Image(img_nb + 1))
 
 
@@ -71,7 +71,7 @@ class GetInput(GUI):
             img_nb = len(self.images_list)
 
         self.previousImg = ttk.Button(self.ImportFrame, text="Previous") 
-        self.previousImg.grid(row=1, column=0)
+        self.previousImg.grid(row=4, column=2)
         self.previousImg.bind("<ButtonRelease-1>", lambda Var: self.Previous_Image(img_nb - 1))
         
 
@@ -87,7 +87,7 @@ class GetInput(GUI):
     def refreshWindowScale(self):
         self.minR = tk.Scale(self.WindowFrame, from_= 0, to= 150, length=330, width=10, orient='horizontal', command = lambda val: self.SelectMinR(val))
         self.maxR = tk.Scale(self.WindowFrame, from_= 0, to= 150, length=330, width=10, orient='horizontal', command = lambda val: self.SelectMaxR(val))
-        self.minR.grid(row=4, column=0, sticky="nsew");     self.maxR.grid(row=5, column=0, sticky="nsew")
+        self.minR.grid(row=5, column=0, sticky="nsew");     self.maxR.grid(row=6, column=0, sticky="nsew")
 
 
     def GetWindowSz(self, WindowVar):

@@ -53,3 +53,4 @@ class CoinDetector():
 
         image_coin = Cplt.CoinPlot(self, img_og, y_coin, x_coin, r_coin)
         Cplt.CropCoinPlot(self, image_coin, y_coin, x_coin, r_coin)
+
