@@ -12,7 +12,7 @@ class CoinDetector():
                                             minRadius=minRadius, maxRadius=maxRadius)
             [minRadius, maxRadius] = [minRadius + RadiusWindow, maxRadius + RadiusWindow]
             if time.time() > timeout: # Set timer of 10s, to prevent endless loop
-                tk.messagebox.showwarning(title='Haha Loser!!!! XD gotem', 
+                tk.messagebox.showwarning(title='Error, Coin Not Found', 
                                         message='Cannot distinguish the coin from image. Recommended: change kernel size of median blur.')
                 raise Exception("Cannot distinguish the coin from image."  
                                 "Recommended: change kernel size of median blur.") from None

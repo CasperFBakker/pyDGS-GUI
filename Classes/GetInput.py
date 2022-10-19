@@ -85,8 +85,8 @@ class GetInput(GUI):
         return self.ks_blur
 
     def refreshWindowScale(self):
-        self.minR = tk.Scale(self.WindowFrame, from_= 0, to= 150, length=330, width=10, orient='horizontal', command = lambda val: self.SelectMinR(val))
-        self.maxR = tk.Scale(self.WindowFrame, from_= 0, to= 150, length=330, width=10, orient='horizontal', command = lambda val: self.SelectMaxR(val))
+        self.minR = tk.Scale(self.WindowFrame, from_= 0, to= 500, length=330, width=10, orient='horizontal', command = lambda val: self.SelectMinR(val))
+        self.maxR = tk.Scale(self.WindowFrame, from_= 0, to= 500, length=330, width=10, orient='horizontal', command = lambda val: self.SelectMaxR(val))
         self.minR.grid(row=5, column=0, sticky="nsew");     self.maxR.grid(row=6, column=0, sticky="nsew")
 
 
@@ -96,7 +96,7 @@ class GetInput(GUI):
         
         self.WindowSz = WindowVar.get()
         
-        self.minR.configure(to=(150 - int(self.WindowSz)))
+        self.minR.configure(to=(500 - int(self.WindowSz)))
         self.maxR.configure(from_=(0 + int(self.WindowSz)))
 
     def SelectMinR(self, val):

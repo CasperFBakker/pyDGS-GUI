@@ -99,8 +99,8 @@ class GUI(object):
         setattr(GetInput.GetBlur, 'ks_blur', 5)
         self.BlurSlide.grid(row=3, pady=10, column=0)
         # ------------ Min/Max Radius ------------  
-        self.minR = tk.Scale(tab_1_left_frame_2, from_= 0, to= 150, orient='horizontal', command = lambda val: self.Input.SelectMinR(val))
-        self.maxR = tk.Scale(tab_1_left_frame_2, from_= 0, to= 150, orient='horizontal', command = lambda val: self.Input.SelectMaxR(val))
+        self.minR = tk.Scale(tab_1_left_frame_2, from_= 0, to= 500, orient='horizontal', command = lambda val: self.Input.SelectMinR(val))
+        self.maxR = tk.Scale(tab_1_left_frame_2, from_= 0, to= 500, orient='horizontal', command = lambda val: self.Input.SelectMaxR(val))
         self.minR.set(0); self.maxR.set(5) 
         setattr(GetInput.SelectMinR, 'MinR', 0)
         setattr(GetInput.SelectMaxR, 'MaxR', 5) 
