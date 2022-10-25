@@ -34,7 +34,7 @@ class CoinDetector():
         find_coin = np.reshape(find_coin, (1,3))            # remove unused dimension
         pos_coin_rounded = np.uint16(np.around(find_coin))  # rounded position
         [y_coin, x_coin, r_coin]= pos_coin_rounded[0,:] # position of coin and radius of coin (in pixels)
-
+        
         return y_coin, x_coin, r_coin, img_og
 
 

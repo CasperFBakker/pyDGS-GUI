@@ -83,7 +83,7 @@ class Store_Img_data():
         temp.to_csv('Output data/temp.csv', index=False)
 
         try: 
-            DF = pd.read_csv("Output data/data_" + dir_name +".csv")
+            DF = pd.read_csv("Output data/Image_data/data_" + dir_name +".csv")
 
             if filename in DF.values:
                 result = tk.messagebox.askquestion(title=':(::(:(:(:(', message='The data from this image is already stored. Do you want to replace the data?')
@@ -92,17 +92,17 @@ class Store_Img_data():
                     merged = pd.concat([temp, DF])
 
                     merged = merged.drop_duplicates(subset=['Image name'])
-                    merged.to_csv("Output data/data_" + dir_name +".csv", index=False)
+                    merged.to_csv("Output data/Image_data/data_" + dir_name +".csv", index=False)
 
                 else:
                     pass
             else:
                 temp = pd.DataFrame([data], columns=columns)
                 merged = pd.concat([temp, DF])
-                merged.to_csv("Output data/data_" + dir_name +".csv", index=False)
+                merged.to_csv("Output data/Image_data/data_" + dir_name +".csv", index=False)
 
         except FileNotFoundError:
             temp = pd.DataFrame([data], columns=[columns])
-            temp.to_csv("Output data/data_" + dir_name +".csv", index=False)
+            temp.to_csv("Output data/Image_data/data_" + dir_name +".csv", index=False)
 
 

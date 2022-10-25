@@ -32,11 +32,11 @@ def GetImageRes(img_path):
     dir_name = os.path.basename(dir_path)
 
     try:
-        DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS GUI/Output data/Image_data/data_" + dir_name +".csv")
+        DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS GUI/Output data/Image_data/08_07_22/data_" + dir_name +".csv")
         row = DataFrame[DataFrame["Image name"] == filename].index[0]
         resolution = DataFrame.at[row, 'Pixel size (mm/pixel)']
     except FileNotFoundError:
-        DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/Image_data/data_" + dir_name +".csv")
+        DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/Image_data/08_07_22/data_" + dir_name +".csv")
         row = DataFrame[DataFrame["Image name"] == filename].index[0]
         resolution = DataFrame.at[row, 'Pixel size (mm/pixel)']
     return resolution
@@ -218,7 +218,7 @@ for files in os.listdir(path_of_the_directory):
         nx, ny = original.shape
         P = []; M = []
         for k in tqdm(np.linspace(1,nx-1,100)):
-            [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(5, np.maximum(nx,ny)/(width*resolution / 8), 0.1),  'morl', .5) 
+            [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(5, np.maximum(nx,ny)/(width*resolution / 20), 1),  'morl', .5) 
             period = 1. / frequencies
             power =(abs(cfs)) ** 2
             power = np.mean(np.abs(power), axis=1)/(period**2)
@@ -242,14 +242,25 @@ for files in os.listdir(path_of_the_directory):
         # area-by-number to volume-by-number
         r_v = (p*scales**x) / np.sum(p*scales**x) #volume-by-weight proportion
 
+        # Calculating Percentages
         a = (scales*resolution)
         minSz = np.array([0, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8])
         maxSz = np.array([0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8, 12])
-
         percentage = []
-        for i in range(len(minSz)):
-            _, length = np.shape(np.where((a>minSz[i])&(a<maxSz[i])))   
-            percentage.append(((np.trapz(np.interp([np.linspace(minSz[i], maxSz[i], 1000)], (scales*resolution), r_v)[0])*length/1000))*100)
+        if a[0] > 0.063:
+            percentage.append(0)
+            minSz = np.array([0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8])
+            maxSz = np.array([0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8, 12])
+
+            _, length =  np.shape(np.where(a<0.125))
+            percentage.append(((np.trapz(np.interp([np.linspace(a[0], 0.125, 1000)], (scales*resolution), r_v)[0])*length/1000))*100)
+            for i in range(len(minSz)):
+                _, length = np.shape(np.where((a>minSz[i])&(a<maxSz[i])))   
+                percentage.append(((np.trapz(np.interp([np.linspace(minSz[i], maxSz[i], 1000)], (scales*resolution), r_v)[0])*length/1000))*100)
+        else: 
+            for i in range(len(minSz)):
+                _, length = np.shape(np.where((a>minSz[i])&(a<maxSz[i])))   
+                percentage.append(((np.trapz(np.interp([np.linspace(minSz[i], maxSz[i], 1000)], (scales*resolution), r_v)[0])*length/1000))*100)
 
         if save_Percentages == "y":
             Store_Percentage(path_of_the_directory, files, percentage, Description_Data)
@@ -259,36 +270,40 @@ for files in os.listdir(path_of_the_directory):
                 percentage[index] = np.nan
             else:
                 pass
-
-        C_s = 191.13808985413237
-        P_s = 2.804953092790458
-        C_m = 0.1854802814657743
-        P_m = -2.1493016950684303
-        C_l = 0.3530984202702832
-        P_l = 1.887249670551427
-
-        first_step = []
         
-        for index, value in enumerate(percentage):
-            if value != 0:
-                if minSz[index] <=0.250:
-                    first_step.append(value*(C_s * pow(minSz[index], P_s)))
-                elif minSz[index] > 0.250 and  minSz[index] < 1:
-                    first_step.append(value*(C_m * pow(minSz[index], P_m)))
-                elif minSz[index] >= 1:
-                    first_step.append(value*(C_l * pow(minSz[index], P_l)))
-            else: 
-                first_step.append(np.nan)
-        
-        total_sum = np.nansum(first_step)
-        Corrected_Percentage = []
-        for index, value in enumerate(first_step):
-            Corrected_Percentage.append(((value/total_sum)*100))
-
-        Percentiles = Percentage2Percentile(Corrected_Percentage)
 
         if save_Correction == "y":
+            minSz = np.array([0, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8])
+            # Multi-trend correction        
+            C_s = 191.13808985413237
+            P_s = 2.804953092790458
+            C_m = 0.1854802814657743
+            P_m = -2.1493016950684303
+            C_l = 0.3530984202702832
+            P_l = 1.887249670551427
+
+            first_step = []
+            
+            for index, value in enumerate(percentage):
+                if value != 0:
+                    if minSz[index] <=0.250:
+                        first_step.append(value*(C_s * pow(minSz[index], P_s)))
+                    elif minSz[index] > 0.250 and  minSz[index] < 1:
+                        first_step.append(value*(C_m * pow(minSz[index], P_m)))
+                    elif minSz[index] >= 1:
+                        first_step.append(value*(C_l * pow(minSz[index], P_l)))
+                else: 
+                    first_step.append(np.nan)
+            
+            total_sum = np.nansum(first_step)
+            Corrected_Percentage = []
+            for index, value in enumerate(first_step):
+                Corrected_Percentage.append(((value/total_sum)*100))
+
+            Percentiles = Percentage2Percentile(Corrected_Percentage)
+            
             Store_Percentile(path_of_the_directory, files, Percentiles, Description_Data)
+
     else:
         continue
 
