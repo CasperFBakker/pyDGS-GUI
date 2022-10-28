@@ -32,11 +32,11 @@ def GetImageRes(img_path):
     dir_name = os.path.basename(dir_path)
 
     try:
-        DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS GUI/Output data/Image_data/08_07_22/data_" + dir_name +".csv")
+        DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS GUI/Output data/Image_data/26_10_22/Canon/data_" + dir_name +".csv")
         row = DataFrame[DataFrame["Image name"] == filename].index[0]
         resolution = DataFrame.at[row, 'Pixel size (mm/pixel)']
     except FileNotFoundError:
-        DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/Image_data/08_07_22/data_" + dir_name +".csv")
+        DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/Image_data/26_10_22/Canon/data_" + dir_name +".csv")
         row = DataFrame[DataFrame["Image name"] == filename].index[0]
         resolution = DataFrame.at[row, 'Pixel size (mm/pixel)']
     return resolution
@@ -148,7 +148,7 @@ while input_dir == False:
         print('Please end the directory name with: "/" ')
         input_dir = False
 
-path_of_the_directory = os.path.join('/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/08_07_22/', input_directory)
+path_of_the_directory = os.path.join('/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/26_10_22/', input_directory)
 dir_path = os.path.dirname(path_of_the_directory)
 dir_name = os.path.basename(dir_path)
 print('The working directory will be: ', path_of_the_directory)

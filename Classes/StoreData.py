@@ -80,7 +80,7 @@ class Store_Img_data():
 
 
         temp = pd.DataFrame([data], columns=columns)
-        temp.to_csv('Output data/temp.csv', index=False)
+        temp.to_csv('Output data/Image_data/temp.csv', index=False)
 
         try: 
             DF = pd.read_csv("Output data/Image_data/data_" + dir_name +".csv")
