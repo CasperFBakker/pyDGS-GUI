@@ -32,11 +32,11 @@ def GetImageRes(img_path):
     dir_name = os.path.basename(dir_path)
 
     try:
-        DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS GUI/Output data/Image_data/26_10_22/Canon/data_" + dir_name +".csv")
+        DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS GUI/Output data/Image_data/08_07_22/data_" + dir_name +".csv")
         row = DataFrame[DataFrame["Image name"] == filename].index[0]
         resolution = DataFrame.at[row, 'Pixel size (mm/pixel)']
     except FileNotFoundError:
-        DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/Image_data/26_10_22/Canon/data_" + dir_name +".csv")
+        DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/Image_data/08_07_22/data_" + dir_name +".csv")
         row = DataFrame[DataFrame["Image name"] == filename].index[0]
         resolution = DataFrame.at[row, 'Pixel size (mm/pixel)']
     return resolution
@@ -94,21 +94,21 @@ def Store_Percentile(path_of_the_directory, Image_Name, Percentile, Description)
         dir_name = os.path.basename(dir_path)
 
         temp = pd.DataFrame([data], columns=columns)
-        temp.to_csv('Output data/Percentiles/temp_percentile.csv', index=False)
+        temp.to_csv('Output data/08_07_22/Percentiles/temp_percentile.csv', index=False)
 
         try: 
-            DF = pd.read_csv("Output data/Percentile_" + dir_name + "_" + Description + ".csv")
+            DF = pd.read_csv("Output data/08_07_22/Percentile_" + dir_name + "_" + Description + ".csv")
 
             if Image_Name in DF.values:
                 pass
             else:
                 temp = pd.DataFrame([data], columns=columns)
                 merged = pd.concat([temp, DF])
-                merged.to_csv("Output data/Percentile_" + dir_name + "_" + Description + ".csv", index=False)
+                merged.to_csv("Output data/08_07_22/Percentile_" + dir_name + "_" + Description + ".csv", index=False)
 
         except FileNotFoundError:
             temp = pd.DataFrame([data], columns=[columns])
-            temp.to_csv("Output data/Percentile_" + dir_name + "_" + Description + ".csv", index=False)
+            temp.to_csv("Output data/08_07_22/Percentile_" + dir_name + "_" + Description + ".csv", index=False)
 
 # =========================================================
 def Store_Percentage(path_of_the_directory, Image_Name, Percentage, Description):          
@@ -123,18 +123,18 @@ def Store_Percentage(path_of_the_directory, Image_Name, Percentage, Description)
         temp.to_csv('Output data/Percentage/temp_percentage.csv', index=False)
 
         try: 
-            DF = pd.read_csv("Output data/Original_" + dir_name + "_" + Description + ".csv")
+            DF = pd.read_csv("Output data/08_07_22/Original_" + dir_name + "_" + Description + ".csv")
 
             if Image_Name in DF.values:
                 pass
             else:
                 temp = pd.DataFrame([data], columns=columns)
                 merged = pd.concat([temp, DF])
-                merged.to_csv("Output data/Original_" + dir_name + "_" + Description + ".csv", index=False)
+                merged.to_csv("Output data/08_07_22/Original_" + dir_name + "_" + Description + ".csv", index=False)
 
         except FileNotFoundError:
             temp = pd.DataFrame([data], columns=[columns])
-            temp.to_csv("Output data/Original_" + dir_name + "_" + Description + ".csv", index=False)
+            temp.to_csv("Output data/08_07_22/Original_" + dir_name + "_" + Description + ".csv", index=False)
 
 # =========================================================
 input_dir = False
@@ -148,7 +148,7 @@ while input_dir == False:
         print('Please end the directory name with: "/" ')
         input_dir = False
 
-path_of_the_directory = os.path.join('/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/26_10_22/', input_directory)
+path_of_the_directory = os.path.join('/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/08_07_22/', input_directory)
 dir_path = os.path.dirname(path_of_the_directory)
 dir_name = os.path.basename(dir_path)
 print('The working directory will be: ', path_of_the_directory)
@@ -218,7 +218,7 @@ for files in os.listdir(path_of_the_directory):
         nx, ny = original.shape
         P = []; M = []
         for k in tqdm(np.linspace(1,nx-1,100)):
-            [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(5, np.maximum(nx,ny)/(width*resolution / 20), 1),  'morl', .5) 
+            [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(5, np.maximum(nx,ny)/(width*resolution / 1), 1),  'morl', .5) 
             period = 1. / frequencies
             power =(abs(cfs)) ** 2
             power = np.mean(np.abs(power), axis=1)/(period**2)
@@ -241,7 +241,7 @@ for files in os.listdir(path_of_the_directory):
         x = 0
         # area-by-number to volume-by-number
         r_v = (p*scales**x) / np.sum(p*scales**x) #volume-by-weight proportion
-
+        
         # Calculating Percentages
         a = (scales*resolution)
         minSz = np.array([0, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8])
