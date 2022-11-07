@@ -6,17 +6,35 @@ from tqdm import tqdm
 
 start_time = datetime.now()
 
+Date = '26_10_22'
+
+def Setup_Dir(Date, SubFolder=False):
+    if SubFolder:        
+        Photo_Dir = '/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/' + Date + '/' + SubFolder + '/'
+        ImageData_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/Image_data/' + Date + '/' + SubFolder + '/'
+        OutputData_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/' + SubFolder + '/'
+        OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/' +  SubFolder + '/Corrected/'
+        OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/' + SubFolder + '/Uncorrected/'
+    else:
+        Photo_Dir = '/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/' + Date + '/'
+        ImageData_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/Image_data/' + Date + '/'
+        OutputData_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/'
+        OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/Corrected/'
+        OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/Uncorrected/'
+    return Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir
+
+
 def GetImageRes(img_path):
     filename = os.path.basename(img_path)
     dir_path = os.path.dirname(img_path)
     dir_name = os.path.basename(dir_path)
 
     try:
-        DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS GUI/Output data/Image_data/26_10_22/Mobile/data_" + dir_name +".csv")
+        DataFrame = pd.read_csv(ImageData_Dir + "data_" + dir_name +".csv")
         row = DataFrame[DataFrame["Image name"] == filename].index[0]
         resolution = DataFrame.at[row, 'Pixel size (mm/pixel)']
     except FileNotFoundError:
-        DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/Image_data/26_10_22/Mobile/data_" + dir_name +".csv")
+        DataFrame = pd.read_csv("Output data/Image_data/26_10_22/data_" + dir_name +".csv")
         row = DataFrame[DataFrame["Image name"] == filename].index[0]
         resolution = DataFrame.at[row, 'Pixel size (mm/pixel)']
     return resolution
@@ -109,9 +127,9 @@ def Store_Percentile(path_of_the_directory, Image_Name, Percentile, Description)
 
         try: 
             if len(Description) != 0:
-                DF = pd.read_csv("Output data/26_10_22/Mobile/Percentile_" + dir_name + "_" + Description + ".csv")
+                DF = pd.read_csv(OutputCorrected_Dir + "Percentile_" + dir_name + "_" + Description + ".csv")
             else:
-                DF = pd.read_csv("Output data/26_10_22/Mobile/Percentile_" + dir_name + ".csv")
+                DF = pd.read_csv(OutputCorrected_Dir + "Percentile_" + dir_name + ".csv")
 
             if Image_Name in DF.values:
                 pass
@@ -119,17 +137,17 @@ def Store_Percentile(path_of_the_directory, Image_Name, Percentile, Description)
                 temp = pd.DataFrame([data], columns=columns)
                 merged = pd.concat([temp, DF])
                 if len(Description) != 0:
-                    merged.to_csv("Output data/26_10_22/Mobile/Percentile_" + dir_name + "_" + Description + ".csv", index=False)
+                    merged.to_csv(OutputCorrected_Dir + "Percentile_" + dir_name + "_" + Description + ".csv", index=False)
                 else:
-                    merged.to_csv("Output data/26_10_22/Mobile/Percentile_" + dir_name + ".csv", index=False)
+                    merged.to_csv(OutputCorrected_Dir + "Percentile_" + dir_name + ".csv", index=False)
 
 
         except FileNotFoundError:
             temp = pd.DataFrame([data], columns=[columns])
             if len(Description) != 0:
-                temp.to_csv("Output data/26_10_22/Mobile/Percentile_" + dir_name + "_" + Description + ".csv", index=False)
+                temp.to_csv(OutputCorrected_Dir + "Percentile_" + dir_name + "_" + Description + ".csv", index=False)
             else:
-                temp.to_csv("Output data/26_10_22/Mobile/Percentile_" + dir_name + ".csv", index=False)
+                temp.to_csv(OutputCorrected_Dir + "Percentile_" + dir_name + ".csv", index=False)
 # =========================================================
 def Store_Percentage(path_of_the_directory, Image_Name, Percentage, Description):          
 
@@ -144,9 +162,9 @@ def Store_Percentage(path_of_the_directory, Image_Name, Percentage, Description)
 
         try: 
             if len(Description) != 0:
-                DF = pd.read_csv("Output data/26_10_22/Mobile/UncorrectedPercentage_" + dir_name + "_" + Description + ".csv")
+                DF = pd.read_csv(OutputOriginal_Dir + "UncorrectedPercentage_" + dir_name + "_" + Description + ".csv")
             else:
-                DF = pd.read_csv("Output data/26_10_22/Mobile/UncorrectedPercentage_" + dir_name + ".csv")
+                DF = pd.read_csv(OutputOriginal_Dir + "UncorrectedPercentage_" + dir_name + ".csv")
 
             if Image_Name in DF.values:
                 pass
@@ -154,30 +172,31 @@ def Store_Percentage(path_of_the_directory, Image_Name, Percentage, Description)
                 temp = pd.DataFrame([data], columns=columns)
                 merged = pd.concat([temp, DF])
                 if len(Description) != 0:              
-                    merged.to_csv("Output data/26_10_22/Mobile/UncorrectedPercentage_" + dir_name + "_" + Description + ".csv", index=False)
+                    merged.to_csv(OutputOriginal_Dir + "UncorrectedPercentage_" + dir_name + "_" + Description + ".csv", index=False)
                 else:
-                    merged.to_csv("Output data/26_10_22/Mobile/UncorrectedPercentage_" + dir_name + ".csv", index=False)
+                    merged.to_csv(OutputOriginal_Dir + "UncorrectedPercentage_" + dir_name + ".csv", index=False)
 
         except FileNotFoundError:
             temp = pd.DataFrame([data], columns=[columns])
             if len(Description) != 0:            
-                temp.to_csv("Output data/26_10_22/Mobile/UncorrectedPercentage_" + dir_name + "_" + Description + ".csv", index=False)
+                temp.to_csv(OutputOriginal_Dir + "UncorrectedPercentage_" + dir_name + "_" + Description + ".csv", index=False)
             else:
-                temp.to_csv("Output data/26_10_22/Mobile/UncorrectedPercentage_" + dir_name + ".csv", index=False)
+                temp.to_csv(OutputOriginal_Dir + "UncorrectedPercentage_" + dir_name + ".csv", index=False)
 # =========================================================
 
 input_dir = False
 
 while input_dir == False:
-    input_directory = input('Type the name of the directory (close with /): ')
+    input_directory = input('Type the name of the directory: ')
 
     if input_directory.endswith("/"):
+        Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir = Setup_Dir(Date, 'Mobile')
         input_dir = True
     else:
         print('Please end the directory name with: "/" ')
         input_dir = False
 
-path_of_the_directory = os.path.join('/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/26_10_22/Mobile/', input_directory)
+path_of_the_directory = os.path.join(Photo_Dir, input_directory)
 dir_path = os.path.dirname(path_of_the_directory)
 dir_name = os.path.basename(dir_path)
 print('The working directory will be: ', path_of_the_directory)
