@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 start_time = datetime.now()
 
-Date = 'Tests'
+Date = '08_07_22'
 
 def Setup_Dir(Date, SubFolder=False):
     if SubFolder:        
