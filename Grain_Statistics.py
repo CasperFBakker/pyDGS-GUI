@@ -24,11 +24,11 @@ def Store_Stats(path_of_the_directory, Image_Name, Percentile):
             temp.to_csv(Output_Dir + "Statistics_" + dir_name + ".csv", index=False)
 
 
-dir_name = 'Test_7'
-Output_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Mobile/Statistics/'
+dir_name = 'Locations'
+Output_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/08_07_22/Statistics/'
 
-ImageName = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Mobile/Corrected/Percentile_Test_7.csv'))
-data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Mobile/Corrected/Percentile_Test_7.csv', index_col=0), dtype='float64')
+ImageName = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/08_07_22/Corrected/Percentile_Locations.csv'))
+data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/08_07_22/Corrected/Percentile_Locations.csv', index_col=0), dtype='float64')
 GrainSizeBins = np.array([0, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8], dtype='float64')
 
 for i in range(len(data)):

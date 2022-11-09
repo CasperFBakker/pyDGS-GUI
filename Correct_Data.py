@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 start_time = datetime.now()
 
-Date = '26_10_22'
+Date = 'Tests'
 
 def Setup_Dir(Date, SubFolder=False):
     if SubFolder:        
@@ -34,7 +34,7 @@ def GetImageRes(img_path):
         row = DataFrame[DataFrame["Image name"] == filename].index[0]
         resolution = DataFrame.at[row, 'Pixel size (mm/pixel)']
     except FileNotFoundError:
-        DataFrame = pd.read_csv("Output data/Image_data/26_10_22/data_" + dir_name +".csv")
+        DataFrame = pd.read_csv("'/home/casper/Documents/Python/pyDGS-GUI/Output data/Image_data/'data_" + dir_name +".csv")
         row = DataFrame[DataFrame["Image name"] == filename].index[0]
         resolution = DataFrame.at[row, 'Pixel size (mm/pixel)']
     return resolution
@@ -190,7 +190,7 @@ while input_dir == False:
     input_directory = input('Type the name of the directory: ')
 
     if input_directory.endswith("/"):
-        Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir = Setup_Dir(Date, 'Mobile')
+        Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir = Setup_Dir(Date)
         input_dir = True
     else:
         print('Please end the directory name with: "/" ')
@@ -304,7 +304,7 @@ for files in os.listdir(path_of_the_directory):
         # ======================================================================== 
 
         P = []; M = []
-        for k in tqdm(np.linspace(1,nx-1,5)):
+        for k in tqdm(np.linspace(1,nx-1,10)):
             [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(np.maximum(nx,ny)/(width*resolution / 1), 
                                                                         np.maximum(nx,ny)/(width*resolution / 20), 1),  'morl', .5) 
             period = 1. / frequencies

@@ -42,7 +42,7 @@ edges = cv.Canny(Blurred,25,50)
 img_og1 = img.copy()                              # Make copy of image
 img_og1 = cv.cvtColor(img_og1, cv.COLOR_BGR2RGB) # Converting the image to RGB pattern (default = BGR)
 
-circles1 = cv.HoughCircles(Blurred, cv.HOUGH_GRADIENT, 1, 120, param1=50, param2=30, minRadius=50, maxRadius=100)
+circles1 = cv.HoughCircles(Blurred, cv.HOUGH_GRADIENT, 1, 120, param1=50, param2=30, minRadius=0, maxRadius=50)
 circles2 = cv.HoughCircles(Blurred, cv.HOUGH_GRADIENT, 1, 120, param1=50, param2=30, minRadius=300, maxRadius=350)
 circles3 = cv.HoughCircles(Blurred, cv.HOUGH_GRADIENT, 1, 120, param1=50, param2=30, minRadius=600, maxRadius=650)
 
@@ -85,20 +85,11 @@ if circles3 is not None:
 
 
 
-plt.subplot(7,1,5); plt.imshow(img_og1), plt.xticks([]), plt.yticks([]),plt.title('Min r: 50, Max r:100')
-plt.subplot(7,1,6); plt.imshow(img_og2), plt.xticks([]), plt.yticks([]),plt.title('Min r: 300, Max r:350')
-plt.subplot(7,1,7); plt.imshow(img_og3), plt.xticks([]), plt.yticks([]),plt.title('Min r: 600, Max r:650')
-plt.subplot(711),plt.imshow(plt.imread(filename))
-plt.title('Original Image'), plt.xticks([]), plt.yticks([])
+plt.imshow(img_og1), plt.xticks([]), plt.yticks([]),plt.title('Min r: 0, Max r:50', fontsize=20);plt.show()
+plt.imshow(img_og2), plt.xticks([]), plt.yticks([]),plt.title('Min r: 300, Max r:350', fontsize=20);plt.show()
+plt.imshow(img_og3), plt.xticks([]), plt.yticks([]),plt.title('Min r: 600, Max r:650', fontsize=20);plt.show()
+plt.imshow(plt.imread(filename)), plt.title('Original Image', fontsize=20), plt.xticks([]), plt.yticks([]);plt.show()
+plt.imshow(gray,cmap = 'gray'), plt.title('Gray-Scaled', fontsize=20), plt.xticks([]), plt.yticks([]);plt.show()
+plt.imshow(Blurred,cmap = 'gray'), plt.title('Blurred', fontsize=20), plt.xticks([]), plt.yticks([]);plt.show()
 
-plt.subplot(712),plt.imshow(gray,cmap = 'gray')
-plt.title('Gray-Scaled'), plt.xticks([]), plt.yticks([])
-
-plt.subplot(713),plt.imshow(Blurred,cmap = 'gray')
-plt.title('Blurred'), plt.xticks([]), plt.yticks([])
-
-plt.subplot(714),plt.imshow(edges,cmap = 'gray')
-plt.title('Edge Image'), plt.xticks([]), plt.yticks([])
-plt.show()
-
-plt.show()
+plt.imshow(edges,cmap = 'gray'), plt.title('Edge Image', fontsize=20), plt.xticks([]), plt.yticks([]); plt.show()
