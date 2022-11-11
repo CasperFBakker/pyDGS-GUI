@@ -72,16 +72,16 @@ index_lst = [1, 2, 3, 5, 6, 7, 8, 9]
 # plt.show()
 
 
-# D16_HeatMap = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Mobile/Statistics_AVG/All_D90.csv', index_col=0))
-# D16_HeatMap[D16_HeatMap==0] = np.nan
+D16_HeatMap = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Mobile/Statistics_AVG/All_D16.csv', index_col=0))
+D16_HeatMap[D16_HeatMap==0] = np.nan
 
-# plt.imshow(D16_HeatMap , cmap = 'coolwarm', interpolation=None)
-# plt.colorbar().set_label(label=r'D$_{16}$ (mm)', fontsize=15)
-# plt.xticks(np.arange(0,8,1), ['R1','R2','R3','R5','R7','R8','R9','R10'])
-# plt.yticks(np.arange(0,5,1), ['1', '0.75', '0.50', '0.25', '0'], rotation=0)
-# plt.title(r"D${16}$", fontsize=20)
-# plt.ylabel("Elevation (m)", fontsize=15)
-# plt.show()
+plt.imshow(D16_HeatMap , cmap = 'coolwarm', interpolation=None)
+plt.colorbar().set_label(label=r'D$_{16}$ (mm)', fontsize=15)
+plt.xticks(np.arange(0,8,1), ['R1','R2','R3','R5','R7','R8','R9','R10'])
+plt.yticks(np.arange(0,5,1), ['1', '0.75', '0.50', '0.25', '0'], rotation=0)
+plt.title(r"D${16}$", fontsize=20)
+plt.ylabel("Elevation (m)", fontsize=15)
+plt.show()
 
 
 
@@ -189,14 +189,21 @@ index_lst = [1, 2, 3, 5, 6, 7, 8, 9]
 # plt.ylabel('Grain size (mm)', fontsize=20)
 # plt.show()  
 
-
+# import seaborn as sns
 
 # dataCanon =  np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Canon/Statistics_AVG/Statistics_All.csv'))
 # dataMobile = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Mobile/Statistics_AVG/Statistics_All.csv'))
-
+# x = []; y = []
 # for i in range(len(dataCanon)):
-#     plt.scatter(dataMobile[i,1:], dataCanon[i,1:], color='b')
+#     x.append(dataMobile[i,1:])
+#     y.append(dataCanon[i,1:])
 
+# x = np.squeeze(np.reshape(np.array(x), [1,330]))
+# y = np.squeeze(np.reshape(np.array(y), [1,330]))
+# x = np.array(x, dtype='float64')
+# y = np.array(y, dtype='float64')
+# # ax = sns.lineplot(x, y, ci=50)
+# ax = sns.regplot(x, y, ci=80)
 # plt.plot(np.arange(0,6,1), linestyle='--', color='k')
 # plt.xlabel('Grain size from mobile phone camera (mm)', fontsize=18)
 # plt.ylabel('Grain size from photo camera (mm)', fontsize=18)
