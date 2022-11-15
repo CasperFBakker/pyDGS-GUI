@@ -1,6 +1,3 @@
-
-Date = '26_10_22'
-
 def Setup_Dir(Date, SubFolder=False):
     if SubFolder:        
         Photo_Dir = '/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/' + Date + '/' + SubFolder + '/'
@@ -16,4 +13,6 @@ def Setup_Dir(Date, SubFolder=False):
         OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/UnCorrected/'
     return Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir
 
-print(Setup_Dir(Date, 'Mobile'))
+if __name__ == '__main__':
+    Date = '26_10_22'
+    print(Setup_Dir(Date, 'Mobile'))
