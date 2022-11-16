@@ -36,12 +36,22 @@ y_coords, x_coords, coefs, new_xcoords = GridCreator(Top_Coord, Bottom_Coord, 5,
 plt.plot(Top_Coord[0,:],Top_Coord[1,:], color='k')
 plt.plot(Bottom_Coord[0,:],Bottom_Coord[1,:], color='k')
 
+print(np.shape(x_coords))
 for i in range(len(coefs)):
-    poly1d_fn = np.poly1d(coefs[i,:])
-    plt.scatter(x_coords[i], y_coords[i])
-    plt.plot(x_coords[i], poly1d_fn(x_coords[i]), label='down')
+        poly1d_fn = np.poly1d(coefs[i,:])
+        plt.scatter(x_coords[i], y_coords[i])
+        # plt.plot(x_coords[i], poly1d_fn(x_coords[i]), label='down')
+
 
 
 plt.show()
-plt.plot(new_xcoords)
-plt.show()
+
+
+# x =  np.array([117409.381, 117261.811, 117032.068, 116557.854, 116071.970, 115824.012, 115526.010, 115306.900])
+# y =  np.array([560087.034, 559906.751, 559705.862, 559333.503, 558960.603, 558770.808, 558481.620, 558201.731])
+
+# x_new, y_new = np.meshgrid(x,y)
+# plt.scatter(x_new, y_new)
+# plt.scatter(x,y)
+# plt.show()
+
