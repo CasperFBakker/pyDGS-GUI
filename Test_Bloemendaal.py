@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 start_time = datetime.now()
 
-Date = '08_07_22'
+Date = '20_10_22'
 
 def Setup_Dir(Date, SubFolder=False):
     if SubFolder:        
@@ -22,7 +22,6 @@ def Setup_Dir(Date, SubFolder=False):
         OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/Corrected/'
         OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/Uncorrected/'
     return Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir
-
 
 def GetImageRes(img_path):
     filename = os.path.basename(img_path)
@@ -276,7 +275,7 @@ for files in os.listdir(path_of_the_directory):
 
         P = []; M = []
         for k in tqdm(np.linspace(1,nx-1,100)):
-            [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(5, np.maximum(nx,ny)/(width*resolution / 1), 1),  'morl', .5) 
+            [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(5, np.maximum(nx,ny)/(width*resolution / 8), 1),  'morl', .5) 
             period = 1. / frequencies
             power =(abs(cfs)) ** 2
             power = np.mean(np.abs(power), axis=1)/(period**2)
@@ -298,68 +297,19 @@ for files in os.listdir(path_of_the_directory):
         p = p/np.sum(p)
 
         percentage_1 = PercentageFromPDF(p, scales, resolution)
-
-        # ========================================================================
-        # ***************************** Large Scales *****************************
-        # ======================================================================== 
-
-        P = []; M = []
-        for k in tqdm(np.linspace(1,nx-1,10)):
-            [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(np.maximum(nx,ny)/(width*resolution / 1), 
-                                                                        np.maximum(nx,ny)/(width*resolution / 20), 1),  'morl', .5) 
-            period = 1. / frequencies
-            power =(abs(cfs)) ** 2
-            power = np.mean(np.abs(power), axis=1)/(period**2)
-            P.append(power)
-
-            M.append(period[np.argmax(power)])
-            sleep(uniform(0.005, 0.01))
-        p = np.mean(np.vstack(P), axis=0)
-        p = np.array(p/np.sum(p))
-
-        scales = np.array(period)
-
-        srt = np.sqrt(np.sum(p*((scales-np.mean(M))**2)))
-
-        p = p+stats.norm.pdf(scales, np.mean(M), srt/2)
-        p = np.hstack([p])
-        scales = np.hstack([scales])
-        p = p/np.sum(p)
-
-        percentage_2 = PercentageFromPDF(p, scales, resolution)
-
-        Uncorrected_Percentage = PercentageFromSum((percentage_1[0:9] + percentage_2[9:]))
+        Uncorrected_Percentage = PercentageFromSum(percentage_1)
         # ========================================================================
         # ****************************** Correction ******************************
         # ======================================================================== 
-        GrainSz_1 = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500]
-        Cor_1 = []
+        GrainSz_1 = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
 
-        # percentage_1 = list(filter(lambda num: num != 0, percentage_1))
-
-        for index, value in enumerate(GrainSz_1):
-            if value != 0:
-                Cor_1.append((np.pi/6)*(value**3) * percentage_1[index])
-            else:
-                Cor_1.append(0)
-
-        Cor_1_1 = PercentageFromSum(Cor_1)
+        Cor_1_1 = PercentageFromSum(percentage_1[1:])
         Cor_1_2 = PercentageFromSum(Proffitt_Correction(Cor_1_1, GrainSz_1, Power=-0.47))
-
-        GrainSz_2= [0.500, 0.710, 1, 2, 4, 8]
-        percentage_2 = list(filter(lambda num: num != 0, percentage_2))
-
-        Cor_2_1 = PercentageFromSum(Proffitt_Correction(percentage_2, GrainSz_2))
-
-        Cor_3_1 = Cor_1_2 + Cor_2_1[1:]
-        
-        Corrected_Percentage = (PercentageFromSum(Cor_3_1))
-
-
-        Percentiles = Percentage2Percentile(Corrected_Percentage)
+        Corrected_Percentage = Cor_1_2
+        Percentiles = Percentage2Percentile(Cor_1_2)
 
         Store_Percentile(path_of_the_directory, files, Percentiles, Description_Data)
-
+        
         if save_Percentages == "y":
             Store_Percentage(path_of_the_directory, files, Uncorrected_Percentage, Description_Data)
 

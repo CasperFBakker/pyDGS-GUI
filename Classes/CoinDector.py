@@ -24,6 +24,7 @@ class CoinDetector():
     def Coin_Dector(self, img_path, ks_blur, RadiusWindow, minRadius, maxRadius):
 
         img = cv2.imread(img_path, cv2.IMREAD_COLOR) # Read the image 
+
         img_og = img.copy()                              # Make copy of image
         img_og = cv2.cvtColor(img_og, cv2.COLOR_BGR2RGB) # Converting the image to RGB pattern (default = BGR)
 

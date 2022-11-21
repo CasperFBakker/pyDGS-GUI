@@ -58,7 +58,7 @@ class Store_Img_data():
         
         height, width, size_pixel = Store_Img_data.Scale_Img(self, img_path, r_coin, coin_type)
  
-        if img.get("model") == 'Canon EOS 1100D':
+        if img.get("model") == 'Canon EOS 1100D' or  img.get("model") == 'iPhone SE (2nd generation)':
             img_height = img.get("pixel_y_dimension") * size_pixel
             img_width = img.get("pixel_x_dimension")* size_pixel
 
