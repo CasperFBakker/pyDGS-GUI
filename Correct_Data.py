@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 start_time = datetime.now()
 
-Date = '08_07_22'
+Date = 'Tests'
 
 def Setup_Dir(Date, SubFolder=False):
     if SubFolder:        
@@ -22,7 +22,6 @@ def Setup_Dir(Date, SubFolder=False):
         OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/Corrected/'
         OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/Uncorrected/'
     return Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir
-
 
 def GetImageRes(img_path):
     filename = os.path.basename(img_path)
@@ -344,7 +343,7 @@ for files in os.listdir(path_of_the_directory):
                 Cor_1.append(0)
 
         Cor_1_1 = PercentageFromSum(Cor_1)
-        Cor_1_2 = PercentageFromSum(Proffitt_Correction(Cor_1_1, GrainSz_1, Power=-0.47))
+        Cor_1_2 = PercentageFromSum(Proffitt_Correction(Cor_1_1, GrainSz_1, Power=-1))
 
         GrainSz_2= [0.500, 0.710, 1, 2, 4, 8]
         percentage_2 = list(filter(lambda num: num != 0, percentage_2))

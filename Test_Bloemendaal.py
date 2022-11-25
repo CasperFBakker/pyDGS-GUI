@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 start_time = datetime.now()
 
-Date = '20_10_22'
+Date = '26_10_22'
 
 def Setup_Dir(Date, SubFolder=False):
     if SubFolder:        
@@ -189,7 +189,7 @@ while input_dir == False:
     input_directory = input('Type the name of the directory: ')
 
     if input_directory.endswith("/"):
-        Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir = Setup_Dir(Date)
+        Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir = Setup_Dir(Date, SubFolder='Mobile')
         input_dir = True
     else:
         print('Please end the directory name with: "/" ')
