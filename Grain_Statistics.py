@@ -25,10 +25,10 @@ def Store_Stats(path_of_the_directory, Image_Name, Percentile):
 
 
 dir_name = 'photos_samples.csv'
-Output_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/Bloemendaal/Statistics/'
+Output_Dir = '/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/26_10_22/Sieve/Statistics/'
 
-ImageName = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/Bloemendaal/Corrected/Percentile_photos_samples.csv'))
-data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/Bloemendaal/Corrected/Percentile_photos_samples.csv', index_col=0), dtype='float64')
+ImageName = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/26_10_22/Sieve/Percentile_Sieve.csv'))
+data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/26_10_22/Sieve/Percentile_Sieve.csv', index_col=0), dtype='float64')
 GrainSizeBins = np.array([0, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8], dtype='float64')
 
 for i in range(len(data)):

@@ -2,30 +2,22 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-GrainSz = [0, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
+GrainSz = np.array([0, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8])
 
 
-dgs_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Mobile/Uncorrected/UncorrectedPercentage_All.csv'))
-sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Percentage_Sieve.csv'))
+dgs_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/26_10_22/Mobile/Uncorrected/UncorrectedPercentage_All.csv'))
+sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/26_10_22/Percentage_Sieve.csv'))
 
 Density_Sand = 0.00165 # (g/mm**3)
-Resolution = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Resolution_All.csv'))[:,1]
+Resolution = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/26_10_22/Resolution_All.csv'))[:,1]
 
 Area_Fraction = []; Grain_Area = []; Grain_Volume = []; Grain_Mass = []; Mass_Fraction = np.zeros((34,14))
 
 Image_Area = (4000*Resolution) * (2250 * Resolution)
+Grain_Area = np.pi*(GrainSz/2)**2
 
-for index, value in enumerate(GrainSz):
-        Grain_Area.append(np.pi*((value/2)**2))
-
-        if value < 2:
-            Grain_Volume.append((np.pi/6)*(value)**3)   # Assume spheres for grains smaller than 2 mm
-        else: 
-            Grain_Volume.append(np.pi*((value/2)**2)*1) # Assume flat disks for grain larger than 1 mm 
-        
-        Grain_Mass.append(Grain_Volume[index] * Density_Sand)
-
-Grain_Area = np.array(Grain_Area); Grain_Volume = np.array(Grain_Volume); Grain_Mass = np.array(Grain_Mass)
+Grain_Volume = np.where(GrainSz < 2, (np.pi/6)*(GrainSz)**3, np.pi*((GrainSz/2)**2)*1)
+Grain_Mass = Grain_Volume * Density_Sand
 
 Nb_Grains = []
 

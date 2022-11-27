@@ -6,21 +6,21 @@ from tqdm import tqdm
 
 start_time = datetime.now()
 
-Date = 'Tests'
+Date = '26_10_22'
 
 def Setup_Dir(Date, SubFolder=False):
     if SubFolder:        
         Photo_Dir = '/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/' + Date + '/' + SubFolder + '/'
-        ImageData_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/Image_data/' + Date + '/' + SubFolder + '/'
-        OutputData_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/' + SubFolder + '/'
-        OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/' +  SubFolder + '/Corrected/'
-        OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/' + SubFolder + '/Uncorrected/'
+        ImageData_Dir = '/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/Image_data/' + Date + '/' + SubFolder + '/'
+        OutputData_Dir = '/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/' + Date + '/' + SubFolder + '/'
+        OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/' + Date + '/' +  SubFolder + '/Corrected/'
+        OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/' + Date + '/' + SubFolder + '/Uncorrected/'
     else:
         Photo_Dir = '/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/' + Date + '/'
-        ImageData_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/Image_data/' + Date + '/'
-        OutputData_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/'
-        OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/Corrected/'
-        OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/Uncorrected/'
+        ImageData_Dir = '/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/Image_data/' + Date + '/'
+        OutputData_Dir = '/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/' + Date + '/'
+        OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/' + Date + '/Corrected/'
+        OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/' + Date + '/Uncorrected/'
     return Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir
 
 def GetImageRes(img_path):
@@ -189,7 +189,7 @@ while input_dir == False:
     input_directory = input('Type the name of the directory: ')
 
     if input_directory.endswith("/"):
-        Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir = Setup_Dir(Date)
+        Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir = Setup_Dir(Date, 'Mobile')
         input_dir = True
     else:
         print('Please end the directory name with: "/" ')
@@ -250,7 +250,7 @@ for files in os.listdir(path_of_the_directory):
 
         img = cv2.imread(image)
         nxx, nyy, _ = img.shape
-        width = max(nxx, nyy)
+        width = min(nxx, nyy)
 
         im = imread(image)   # read the image straight with imread
         im = np.squeeze(im)  # squeeze singleton dimensions
@@ -261,7 +261,7 @@ for files in os.listdir(path_of_the_directory):
             im = (0.299 * im[:,:,0] + 0.5870*im[:,:,1] + 0.114*im[:,:,2]).astype('uint8')
 
         nx,ny = np.shape(im)
-        if nx>ny:
+        if nx<ny:
             im=im.T
 
         im = standardize(im)
@@ -355,9 +355,9 @@ for files in os.listdir(path_of_the_directory):
         Corrected_Percentage = (PercentageFromSum(Cor_3_1))
 
 
-        Percentiles = Percentage2Percentile(Corrected_Percentage)
+        # Percentiles = Percentage2Percentile(Corrected_Percentage)
 
-        Store_Percentile(path_of_the_directory, files, Percentiles, Description_Data)
+        # Store_Percentile(path_of_the_directory, files, Percentiles, Description_Data)
 
         if save_Percentages == "y":
             Store_Percentage(path_of_the_directory, files, Uncorrected_Percentage, Description_Data)
