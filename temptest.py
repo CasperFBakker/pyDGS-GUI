@@ -25,6 +25,7 @@ dgs_data_cor = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/pyD
 
 sieve_open = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
 error = sieve_data[:34, 2:]- dgs_data_cor[:34, 2:]
+std = np.std(error.astype(np.float64), axis=0)
 
 plt.subplot(2,1,1)
 for i in range(len(dgs_data)):
@@ -36,7 +37,7 @@ plt.title('Corrected', fontsize=20)
 plt.hlines(0, 0.063, 8, color='k')
 
 plt.subplot(2,1,2)
-plt.plot(sieve_open, np.mean(error, axis=0))
+plt.errorbar(x=sieve_open, y=np.mean(error, axis=0), yerr=std, capsize=3)
 plt.xscale('log')
 plt.show()
 
