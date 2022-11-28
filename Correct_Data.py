@@ -11,16 +11,16 @@ Date = '26_10_22'
 def Setup_Dir(Date, SubFolder=False):
     if SubFolder:        
         Photo_Dir = '/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/' + Date + '/' + SubFolder + '/'
-        ImageData_Dir = '/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/Image_data/' + Date + '/' + SubFolder + '/'
-        OutputData_Dir = '/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/' + Date + '/' + SubFolder + '/'
-        OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/' + Date + '/' +  SubFolder + '/Corrected/'
-        OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/' + Date + '/' + SubFolder + '/Uncorrected/'
+        ImageData_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/Image_data/' + Date + '/' + SubFolder + '/'
+        OutputData_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/' + SubFolder + '/'
+        OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/' +  SubFolder + '/Corrected/'
+        OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/' + SubFolder + '/Uncorrected/'
     else:
         Photo_Dir = '/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/' + Date + '/'
-        ImageData_Dir = '/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/Image_data/' + Date + '/'
-        OutputData_Dir = '/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/' + Date + '/'
-        OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/' + Date + '/Corrected/'
-        OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS GUI/pyDGS-GUI/Output data/' + Date + '/Uncorrected/'
+        ImageData_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/Image_data/' + Date + '/'
+        OutputData_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/'
+        OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/Corrected/'
+        OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/Uncorrected/'
     return Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir
 
 def GetImageRes(img_path):
@@ -327,7 +327,8 @@ for files in os.listdir(path_of_the_directory):
 
         percentage_2 = PercentageFromPDF(p, scales, resolution)
 
-        Uncorrected_Percentage = PercentageFromSum((percentage_1[0:9] + percentage_2[9:]))
+        # Uncorrected_Percentage = PercentageFromSum((percentage_1[0:9] + percentage_2[9:]))
+        Uncorrected_Percentage = PercentageFromSum((percentage_1[0:10] + percentage_2[10:]))
         # ========================================================================
         # ****************************** Correction ******************************
         # ======================================================================== 
@@ -351,7 +352,8 @@ for files in os.listdir(path_of_the_directory):
         Cor_2_1 = PercentageFromSum(Proffitt_Correction(percentage_2, GrainSz_2))
 
         Cor_3_1 = Cor_1_2 + Cor_2_1[1:]
-        
+
+    
         Corrected_Percentage = (PercentageFromSum(Cor_3_1))
 
 
