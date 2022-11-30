@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 GrainSz = np.array([0, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8])
 
 
-dgs_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Mobile/Uncorrected/UncorrectedPercentage_All.csv'))
+dgs_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Mobile/Uncorrected/Transform/Uncorrected_TransfAll.csv'))
 sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Sieve/Percentage_Sieve.csv'))
 
 Density_Sand = 0.00165 # (g/mm**3)
@@ -21,7 +21,7 @@ Grain_Mass = Grain_Volume * Density_Sand
 
 Nb_Grains = []
 
-for i in range(len(dgs_data)):
+for i in range(len(Resolution)):
     Nb_Grains = []
     Image_Area = (4000*Resolution[i]) * (2250 * Resolution[i])
 
@@ -58,8 +58,8 @@ plt.show()
 
 
 
-# # df = pd.DataFrame(Mass_Fraction, columns=['0 mm', '0.063 mm', '0.125 mm', '0.180 mm', '0.250 mm', '0.300 mm', '0.355 mm', '0.425 mm', '0.500 mm',' 0.710 mm', '1 mm', '2 mm', '4 mm', '8 mm'])
-# # df.to_csv('Temps.csv')
+df = pd.DataFrame(Mass_Fraction, columns=['0 mm', '0.063 mm', '0.125 mm', '0.180 mm', '0.250 mm', '0.300 mm', '0.355 mm', '0.425 mm', '0.500 mm',' 0.710 mm', '1 mm', '2 mm', '4 mm', '8 mm'])
+df.to_csv('Temps.csv')
 # def Proffitt_Correction(Percentage_Arr, GrainSz_Arr, Power=-1):
 #     Corrected_Percentages = []
 #     for index, value in enumerate(Percentage_Arr):
