@@ -187,7 +187,7 @@ while input_dir == False:
     input_directory = input('Type the name of the directory: ')
 
     if input_directory.endswith("/"):
-        Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir = Setup_Dir(Date, 'Mobile')
+        Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir = Setup_Dir(Date, SubFolder='Canon')
         input_dir = True
     else:
         print('Please end the directory name with: "/" ')
@@ -363,7 +363,7 @@ for index, Angle in enumerate(Angles):
             # Store_Percentile(path_of_the_directory, files, Percentiles, Description_Data)
 
             if save_Percentages == "y":
-                Store_Percentage(path_of_the_directory, files + '; T=' + str(Angle), Uncorrected_Percentage, Description_Data)
+                Store_Percentage(path_of_the_directory, files + '; T=' + str(Angle),  Uncorrected_Percentage, Description_Data) 
 
             if save_Correction == "y":
                 Percentiles = Percentage2Percentile(Corrected_Percentage)

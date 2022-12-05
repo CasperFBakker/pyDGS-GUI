@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 start_time = datetime.now()
 
-Date = '26_10_22'
+Date = '01_12_22_Egmond'
 
 def Setup_Dir(Date, SubFolder=False):
     if SubFolder:        
@@ -189,7 +189,7 @@ while input_dir == False:
     input_directory = input('Type the name of the directory: ')
 
     if input_directory.endswith("/"):
-        Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir = Setup_Dir(Date, SubFolder='Mobile')
+        Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir = Setup_Dir(Date)
         input_dir = True
     else:
         print('Please end the directory name with: "/" ')
@@ -295,7 +295,12 @@ for files in os.listdir(path_of_the_directory):
         p = np.hstack([p])
         scales = np.hstack([scales])
         p = p/np.sum(p)
+        # x = -0.5
+        # r_v = (p*scales**x) / np.sum(p*scales**x) #volume-by-weight proportion
+        # scales = np.array(period)*resolution
 
+        # pddd = np.interp([.05,.1,.16,.25,.3,.5,.75,.84,.9,.95],np.hstack((0,np.cumsum(r_v))), np.hstack((0,scales)) )
+        # print(pddd)
         percentage_1 = PercentageFromPDF(p, scales, resolution)
         Uncorrected_Percentage = PercentageFromSum(percentage_1)
         # ========================================================================
@@ -304,7 +309,7 @@ for files in os.listdir(path_of_the_directory):
         GrainSz_1 = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
 
         Cor_1_1 = PercentageFromSum(percentage_1[1:])
-        Cor_1_2 = PercentageFromSum(Proffitt_Correction(Cor_1_1, GrainSz_1, Power=-0.47))
+        Cor_1_2 = PercentageFromSum(Proffitt_Correction(Cor_1_1, GrainSz_1, Power=-1))
         Corrected_Percentage = Cor_1_2
         Percentiles = Percentage2Percentile(Cor_1_2)
 
