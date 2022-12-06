@@ -5,14 +5,14 @@ import matplotlib.pyplot as plt
 GrainSz = np.array([0, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8])
 
 
-dgs_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Mobile/Uncorrected/Transform/Uncorrected_TransfAll_2.csv'))
-sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Sieve/Percentage_Sieve.csv'))
+dgs_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Mobile/Uncorrected/Transform/Uncorrected_TransfAll_2.csv'))
+sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Sieve/Percentage_Sieve.csv'))
 sieve_open = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
 
 
 Density_Sand = 0.00165 # (g/mm**3)
-Resolution = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Resolution_All.csv'))[:,1]
-STdev = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Mobile/Uncorrected/Transform/Uncorrected_TransfAll_Stdev_2.csv'))
+Resolution = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Resolution_All.csv'))[:,1]
+STdev = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Mobile/Uncorrected/Transform/Uncorrected_TransfAll_Stdev_2.csv'))
 Area_Fraction = []; Grain_Area = []; Grain_Volume = []; Grain_Mass = []; Mass_Fraction = np.zeros((34,14))
 
 Grain_Area = np.pi*(GrainSz/2)**2
@@ -34,18 +34,18 @@ for i in range(len(Resolution)):
         else:
             Nb_Grains.append((Area_Fraction[j]) / Grain_Area[j])
 
-        if STdev[i, j+1] < 1:
+        if STdev[i, j+1] < 0.5:
             if GrainSz[j] == 4 or GrainSz[j] == 2:
-                Grain_Volume.append(np.pi*((GrainSz[j]/2)**2)*0.01)
+                Grain_Volume.append(np.pi*((GrainSz[j]/2)**2)*0.001)
             else:
                 Grain_Volume.append((np.pi/6)*(GrainSz[j])**3)
         else:
             if GrainSz[j]<=1:
                 Grain_Volume.append(np.pi*((GrainSz[j]/2)**2)*0.75*GrainSz[j])
-            elif GrainSz[j] ==8:
+            elif GrainSz[j] == 8:
                 Grain_Volume.append(np.pi*((GrainSz[j]/2)**2)*0.001)
             else:
-                Grain_Volume.append(np.pi*((GrainSz[j]/2)**2)*0.75)
+                Grain_Volume.append(np.pi*((GrainSz[j]/2)**2)*0.001)
 
     Grain_Mass = np.array(Grain_Volume) * Density_Sand
 
@@ -55,7 +55,7 @@ for i in range(len(Resolution)):
 
     Mass_Fraction[i,:] = (Mass_Fraction[i,:] / np.sum(Mass_Fraction[i,:])) * 100
 
-
+print(Mass_Fraction[0,:])
 plt.subplot(2,1,1)
 sieve_open = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
 for i in range(len(sieve_data)):
@@ -106,11 +106,12 @@ plt.ylabel('D50 Sieve (mm)', fontsize=20)
 plt.show()
 
 
-dgs_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Mobile/Uncorrected/Transform/Uncorrected_R1_Transformed.csv'))\
+dgs_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Mobile/Uncorrected/Transform/Uncorrected_R1_Transformed.csv'))\
 
 for i in range(16):
-    plt.plot(dgs_data[i+1, 1:], label=dgs_data[i+1, 0])
+    plt.plot(sieve_open, dgs_data[i+1, 2:], label=dgs_data[i+1, 0])
 plt.xlabel('Grain size (mm)', fontsize=20)
 plt.ylabel('Percentage', fontsize=20)
+plt.xscale('log')
 plt.legend()
 plt.show()

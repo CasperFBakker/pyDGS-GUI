@@ -345,7 +345,7 @@ for index, Angle in enumerate(Angles):
                     Cor_1.append(0)
 
             Cor_1_1 = PercentageFromSum(Cor_1)
-            Cor_1_2 = PercentageFromSum(Proffitt_Correction(Cor_1_1, GrainSz_1, Power=-1))
+            Cor_1_2 = PercentageFromSum(Proffitt_Correction(Cor_1_1, GrainSz_1, Power=-0.47))
 
             GrainSz_2= [0.500, 0.710, 1, 2, 4, 8]
             percentage_2 = list(filter(lambda num: num != 0, percentage_2))
