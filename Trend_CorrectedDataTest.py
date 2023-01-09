@@ -157,3 +157,10 @@ plt.plot(GrainSz, test_t)
 plt.plot(GrainSz, dgs_data[1,2:])
 plt.plot(GrainSz, sieve_data[1,2:])
 plt.xscale('log')
+
+def Proffitt_Correction(Percentage_Arr, GrainSz_Arr, Power=-1):
+    Corrected_Percentages = []
+    for index, value in enumerate(Percentage_Arr):
+        Corrected_Percentages.append(value * (GrainSz_Arr[index]**(Power)) )
+
+    return Corrected_Percentages 

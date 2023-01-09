@@ -3,7 +3,7 @@ from datetime import datetime
 from random import uniform
 from time import sleep
 from tqdm import tqdm
-
+from scipy.ndimage import rotate as rotate_image
 start_time = datetime.now()
 
 Date = '01_12_22_Egmond'
@@ -11,18 +11,18 @@ Date = '01_12_22_Egmond'
 def Setup_Dir(Date, SubFolder=False):
     if SubFolder:        
         Photo_Dir = '/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/' + Date + '/' + SubFolder + '/'
-        ImageData_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/Image_data/' + Date + '/' + SubFolder + '/'
-        OutputData_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/' + SubFolder + '/'
-        OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/' +  SubFolder + '/Corrected/'
-        OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/' + SubFolder + '/Uncorrected/'
+        ImageData_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/Image_data/' + Date + '/' + SubFolder + '/'
+        OutputData_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/' + Date + '/' + SubFolder + '/'
+        OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/' + Date + '/' +  SubFolder + '/Corrected/'
+        OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/' + Date + '/' + SubFolder + '/Uncorrected/'
     else:
         Photo_Dir = '/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/' + Date + '/'
-        ImageData_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/Image_data/' + Date + '/'
-        OutputData_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/'
-        OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/Corrected/'
-        OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS GUI/Output data/' + Date + '/Uncorrected/'
+        ImageData_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/Image_data/' + Date + '/'
+        OutputData_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/' + Date + '/'
+        OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/' + Date + '/Corrected/'
+        OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/' + Date + '/Uncorrected/'
     return Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir
-
+# =========================================================
 def GetImageRes(img_path):
     filename = os.path.basename(img_path)
     dir_path = os.path.dirname(img_path)
@@ -33,11 +33,11 @@ def GetImageRes(img_path):
         row = DataFrame[DataFrame["Image name"] == filename].index[0]
         resolution = DataFrame.at[row, 'Pixel size (mm/pixel)']
     except FileNotFoundError:
-        DataFrame = pd.read_csv("'/home/casper/Documents/Python/pyDGS-GUI/Output data/Image_data/'data_" + dir_name +".csv")
+        DataFrame = pd.read_csv("/home/casper/Documents/Python/pyDGS-GUI/Output data/Image_data/data_" + dir_name +".csv")
         row = DataFrame[DataFrame["Image name"] == filename].index[0]
         resolution = DataFrame.at[row, 'Pixel size (mm/pixel)']
     return resolution
-
+# =========================================================
 def PercentageFromPDF(r_v, scales, resolution):
     # Calculating Percentages
     a = (scales*resolution)
@@ -60,14 +60,14 @@ def PercentageFromPDF(r_v, scales, resolution):
         _, length = np.shape(np.where((a>minSz[i])&(a<maxSz[i])))   
         percentage.append(((np.trapz(np.interp([np.linspace(minSz[i], maxSz[i], 1000)], (scales*resolution), r_v)[0])*length/1000))*100)
     return percentage
-
+# =========================================================
 def Proffitt_Correction(Percentage_Arr, GrainSz_Arr, Power=-1):
     Corrected_Percentages = []
     for index, value in enumerate(Percentage_Arr):
         Corrected_Percentages.append(value * (GrainSz_Arr[index]**(Power)) )
 
     return Corrected_Percentages 
-
+# =========================================================
 def PercentageFromSum(Percentage_Arr):
     Sum = np.sum(Percentage_Arr)
     Corrected_Percentages = []
@@ -75,7 +75,7 @@ def PercentageFromSum(Percentage_Arr):
         Corrected_Percentages.append((value / Sum)*100)
 
     return Corrected_Percentages
-
+# =========================================================
 def Percentage2Percentile(Percentage):
     Percentage = Percentage[::-1]
     Percentile = 100 - np.nancumsum(Percentage)
@@ -90,7 +90,7 @@ def Percentage2Percentile(Percentage):
     Percentile_cor = Percentile_cor[::-1]
     
     return Percentile_cor
-
+# =========================================================
 def rescale(dat,mn,mx):
     """
     rescales an input dat between mn and mx
@@ -98,7 +98,6 @@ def rescale(dat,mn,mx):
     m = min(dat.flatten())
     M = max(dat.flatten())
     return (mx-mn)*(dat-m)/(M-m)+mn
-
 # =========================================================
 def standardize(img):
     img = np.array(img)
@@ -111,7 +110,6 @@ def standardize(img):
     del m, s, N
 
     return img
-
 # =========================================================
 def Store_Percentile(path_of_the_directory, Image_Name, Percentile, Description):          
 
@@ -182,7 +180,7 @@ def Store_Percentage(path_of_the_directory, Image_Name, Percentage, Description)
             else:
                 temp.to_csv(OutputOriginal_Dir + "UncorrectedPercentage_" + dir_name + ".csv", index=False)
 # =========================================================
-
+Angles = np.array([30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330, 360])
 input_dir = False
 
 while input_dir == False:
@@ -238,90 +236,72 @@ print('_________________________________________________________________________
 
 ext = ('.jpg', '.JPG', '.jpeg', '.heif', '.png')
 
-for files in os.listdir(path_of_the_directory):
-    if files.endswith(ext):
-        image = path_of_the_directory + files  
-        resolution = GetImageRes(image)
-        print(files, resolution)
+for index, Angle in enumerate(Angles):
+    Description_Data = 'Transformed_' + str(Angle)
+    print(Description_Data)
+    for files in os.listdir(path_of_the_directory):
+        if files.endswith(ext):
+            image = path_of_the_directory + files  
+            resolution = GetImageRes(image)
+            print(files, resolution)
 
-        # ========================================================================
-        # **************************** Pre-Processing ****************************
-        # ======================================================================== 
+            # ========================================================================
+            # **************************** Pre-Processing ****************************
+            # ======================================================================== 
 
-        img = cv2.imread(image)
-        nxx, nyy, _ = img.shape
-        width = max(nxx, nyy)
+            img = cv2.imread(image)
+            nxx, nyy, _ = img.shape
+            width = max(nxx, nyy)
 
-        im = imread(image)   # read the image straight with imread
-        im = np.squeeze(im)  # squeeze singleton dimensions
-        if len(np.shape(im))>3:
-            im = im[:, :, :3]            # only keep the first 3 bands
+            im = imread(image)   # read the image straight with imread
+            im = np.squeeze(im)  # squeeze singleton dimensions
+            if len(np.shape(im))>3:
+                im = im[:, :, :3]            # only keep the first 3 bands
 
-        if len(np.shape(im))==3: # if rgb, convert to grey
-            im = (0.299 * im[:,:,0] + 0.5870*im[:,:,1] + 0.114*im[:,:,2]).astype('uint8')
+            if len(np.shape(im))==3: # if rgb, convert to grey
+                im = (0.299 * im[:,:,0] + 0.5870*im[:,:,1] + 0.114*im[:,:,2]).astype('uint8')
 
-        nx,ny = np.shape(im)
-        if nx>ny:
-            im=im.T
+            nx,ny = np.shape(im)
 
-        im = standardize(im)
-        region = im.copy()
-        original = rescale(region,0,255)
-        nx, ny = original.shape
+            im = rotate_image(im, Angle)
+            # if nx>ny:
+            #     im=im.T
+            im = standardize(im)
+            region = im.copy()
+            original = rescale(region,0,255)
+            nx, ny = original.shape
 
-        # ========================================================================
-        # ***************************** Small Scales *****************************
-        # ======================================================================== 
+            # ========================================================================
+            # ***************************** Small Scales *****************************
+            # ======================================================================== 
 
-        P = []; M = []
-        for k in tqdm(np.linspace(1,nx-1,100)):
-            [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(5, np.maximum(nx,ny)/(width*resolution / 8), 1),  'morl', .5) 
-            period = 1. / frequencies
-            power =(abs(cfs)) ** 2
-            power = np.mean(np.abs(power), axis=1)/(period**2)
-            P.append(power)
+            P = []; M = []
+            for k in tqdm(np.linspace(1,nx-1,100)):
+                [cfs, frequencies] = pywt.cwt(original[int(k),:], np.arange(3, np.maximum(nx,ny)/(width*resolution / 2), 1),  'morl', .5) 
+                period = 1. / frequencies
+                power =(abs(cfs)) ** 2
+                power = np.mean(np.abs(power), axis=1)/(period**2)
+                P.append(power)
 
-            M.append(period[np.argmax(power)])
-            sleep(uniform(0.005, 0.01))
-        p = np.mean(np.vstack(P), axis=0)
-        p = np.array(p/np.sum(p))
+                M.append(period[np.argmax(power)])
+                sleep(uniform(0.005, 0.01))
+            p = np.mean(np.vstack(P), axis=0)
+            p = np.array(p/np.sum(p))
 
-        # get real scales by multiplying by resolution (mm/pixel)
-        scales = np.array(period)
+            # get real scales by multiplying by resolution (mm/pixel)
+            scales = np.array(period)
 
-        srt = np.sqrt(np.sum(p*((scales-np.mean(M))**2)))
+            srt = np.sqrt(np.sum(p*((scales-np.mean(M))**2)))
 
-        p = p+stats.norm.pdf(scales, np.mean(M), srt/2)
-        p = np.hstack([p])
-        scales = np.hstack([scales])
-        p = p/np.sum(p)
-        # x = -0.5
-        # r_v = (p*scales**x) / np.sum(p*scales**x) #volume-by-weight proportion
-        # scales = np.array(period)*resolution
+            p = p+stats.norm.pdf(scales, np.mean(M), srt/2)
+            p = np.hstack([p])
+            scales = np.hstack([scales])
+            p = p/np.sum(p)
 
-        # pddd = np.interp([.05,.1,.16,.25,.3,.5,.75,.84,.9,.95],np.hstack((0,np.cumsum(r_v))), np.hstack((0,scales)) )
-        # print(pddd)
-        percentage_1 = PercentageFromPDF(p, scales, resolution)
-        Uncorrected_Percentage = PercentageFromSum(percentage_1)
-        # ========================================================================
-        # ****************************** Correction ******************************
-        # ======================================================================== 
-        GrainSz_1 = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
+            percentage_1 = PercentageFromPDF(p, scales, resolution)
+            Uncorrected_Percentage = PercentageFromSum(percentage_1)
 
-        Cor_1_1 = PercentageFromSum(percentage_1[1:])
-        Cor_1_2 = PercentageFromSum(Proffitt_Correction(Cor_1_1, GrainSz_1, Power=-1))
-        Corrected_Percentage = Cor_1_2
-        Percentiles = Percentage2Percentile(Cor_1_2)
-
-        Store_Percentile(path_of_the_directory, files, Percentiles, Description_Data)
-        
-        if save_Percentages == "y":
-            Store_Percentage(path_of_the_directory, files, Uncorrected_Percentage, Description_Data)
-
-        if save_Correction == "y":
-            Percentiles = Percentage2Percentile(Corrected_Percentage)
-            
-            Store_Percentile(path_of_the_directory, files, Percentiles, Description_Data)
+            Store_Percentage(path_of_the_directory, files + '; T=' + str(Angle), Uncorrected_Percentage, Description_Data)
 
 
 end_time = datetime.now()

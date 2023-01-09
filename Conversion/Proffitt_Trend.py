@@ -29,14 +29,62 @@ def RMSE(Sieve_vals, DGS_vals):
     return root_meansqre_err
 
 
-data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Mobile/Uncorrected/Transform Maxsc8/Uncorrected_TransfAll.csv'))
+data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Mobile/Uncorrected/Transform Maxsc8/Uncorrected_TransfAll_Sort.csv'))
 
-sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Sieve/Percentage_Sieve.csv'))
-GrainSz = np.array([0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8])
-
-
+sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Sieve/Percentage_Sieve_Sort.csv'))
+GrainSz = np.array([0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4])
 
 
+
+plt.subplot(1,2,1)
+for i in range(len(data)):
+       plt.scatter(GrainSz, (sieve_data[i,2:14]/data[i,2:14]), color='k')
+plt.ylabel('%-Sieve / %-pyDGS')
+plt.xlabel('Grain size (mm)')
+plt.xscale('log'); plt.yscale('log')
+
+plt.subplot(1,2,2)
+GrainSz =  np.array([0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 
+         0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4,
+         0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4,
+         0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 4, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4,
+         0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4])
+
+T = [0.009970464, 0.926786123, 16.87658136, 8.169001323, 2.258504119, 0.820357480, 0.287229839, 0.045347506, 0.001552619, 0.000731164, 
+      0.011400404, 0.281745336, 6.273830042, 10.08058776, 4.598461696, 4.596895314, 1.252026824, 0.139469939, 0.003063357, 0.000885969, 
+      0.035479839, 0.586910570, 8.247826620, 9.847588995, 5.713696972, 3.788831660, 2.282081966, 0.939039055, 0.140476223, 0.043796245, 0.021995549, 0.004304766,
+      0.005907813, 0.933618788, 7.429548999, 9.777065441, 2.382603010, 1.785436246, 0.468400417, 0.085658929, 0.005844130, 0.001047785, 0.001157231, 0.005406778, 
+      0.006289253, 0.536159961, 8.694465437, 8.897370897, 4.907957597, 3.071517684, 0.926637220, 0.153858744, 0.006157923, 0.002308614, 0.000790765, 0.001168569, 
+      0.003839265, 0.918193751, 8.220718447, 11.40846892, 2.949495953, 2.735618370, 2.032928988, 1.411428392, 0.653199632, 0.369488582, 0.303810794, 0.420344837,
+      0.011878847, 1.586519519, 13.44809621, 5.511145953, 0.750116662, 0.329454889, 0.105006266, 0.029788004, 0.010565593, 0.004242837, 0.066943356, 
+      0.005560097, 0.354343920, 5.368828275, 7.887648498, 4.530547342, 4.074872800, 1.460170021, 0.786710112, 0.061785833, 0.011506923, 0.003774619, 0.013637385,
+      0.024351945, 0.592872061, 7.024722938, 8.205608330, 3.775355901, 2.210551802, 1.116110571, 0.463142855, 0.117837935, 0.025139799, 0.015654121, 0.003372771]
+plt.scatter(GrainSz, T, color='k')
+plt.ylabel('%-Sieve / %-pyDGS')
+plt.xlabel('Grain size (mm)')
+plt.xscale('log'); plt.yscale('log')
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+# plt.scatter(GrainSz, (sieve_data[4,2:14] / data[1,2:14]))
+# y = (sieve_data[4,2:14] / data[1,2:14]); y = y.astype(np.float64)
+# x = GrainSz; x = x.astype(np.float64)
+
+# plt.plot(x, power_fit(x,y, True),label='power-fit', color='k')
+# plt.xscale('log'); plt.yscale('log')
+# print('r^2', get_r2_numpy(x, y))
+# print('RMSE', RMSE(y, power_fit(x,y)))
+# plt.show()
 
 # plt.subplot(1,3,1)
 # plt.scatter(GrainSz[1:], (sieve_data[21,3:] / data[21,3:]))
@@ -49,18 +97,24 @@ GrainSz = np.array([0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.71
 # print('RMSE', RMSE(y, power_fit(x,y)))
 # print('=====================================================')
 # plt.subplot(1,3,2)
-plt.scatter(GrainSz, (sieve_data[21,2:] / data[21,2:]))
+plt.scatter(GrainSz, (sieve_data[3,2:14] / data[0,2:14]), label='DV')
+plt.scatter(GrainSz, (sieve_data[4,2:14] / data[1,2:14]), label='Mid')
+plt.scatter(GrainSz, (sieve_data[5,2:14] / data[2,2:14]), label='WL')
+plt.legend()
+plt.xscale('log'); plt.yscale('log')
+plt.show()
 
-y = (sieve_data[21,3:9] / data[21,3:9])
+y = (sieve_data[4,2:9] / data[1,2:9])
 y = y.astype(np.float64)
-x = GrainSz[1:7]
+x = GrainSz[0:7]
+print(x)
 x = x.astype(np.float64)
 plt.plot(x, power_fit(x,y, True),label='power-fit', color='k')
 print('r^2', get_r2_numpy(x, y))
 print('RMSE', RMSE(y, power_fit(x,y)))
 print('----------------------------------------')
 
-y = (sieve_data[21,9:] / data[21,9:])
+y = (sieve_data[4,9:14] / data[1,9:14])
 y = y.astype(np.float64)
 x = GrainSz[7:] 
 x = x.astype(np.float64)
@@ -68,7 +122,7 @@ plt.plot(x, power_fit(x,y, True),label='power-fit', color='k')
 print('r^2', get_r2_numpy(x, y))
 print('RMSE', RMSE(y, power_fit(x,y)))
 
-# plt.xscale('log'); plt.yscale('log')
+plt.xscale('log'); plt.yscale('log')
 
 # plt.subplot(1,3,3)
 # plt.scatter(GrainSz, (sieve_data[21,2:] / data[21,2:]))

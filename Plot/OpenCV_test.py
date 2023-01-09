@@ -19,8 +19,8 @@ import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
 
-filename = '/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/08_07_22/Canon_Samples/Sample_1_2.JPG'
-img = cv.imread('/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/08_07_22/Canon_Samples/Sample_1_2.JPG',cv.IMREAD_UNCHANGED)
+filename = '/home/casper/Desktop/20221227_135907.jpg'
+img = cv.imread('/home/casper/Desktop/20221227_135907.jpg',cv.IMREAD_UNCHANGED)
 src = cv.imread(cv.samples.findFile(filename), cv.IMREAD_COLOR)
 gray = cv.cvtColor(src, cv.COLOR_BGR2GRAY)
 Blurred = cv.medianBlur(gray, 15)
