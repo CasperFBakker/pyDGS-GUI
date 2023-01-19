@@ -34,16 +34,20 @@ data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data
 sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Sieve/Percentage_Sieve_Sort.csv'))
 GrainSz = np.array([0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4])
 
-
-
-plt.subplot(1,2,1)
+color = cm.gist_rainbow(np.linspace(0, 1, 34))
+plt.rcParams.update({'font.size': 14})
+# plt.subplot(1,2,1)
 for i in range(len(data)):
-       plt.scatter(GrainSz, (sieve_data[i,2:14]/data[i,2:14]), color='k')
-plt.ylabel('%-Sieve / %-pyDGS')
-plt.xlabel('Grain size (mm)')
-plt.xscale('log'); plt.yscale('log')
+       plt.plot(GrainSz, (sieve_data[i,2:14]/data[i,2:14]),  color=color[i], label=sieve_data[i,0])
 
-plt.subplot(1,2,2)
+# plt.plot(GrainSz, power_fit(GrainSz, (sieve_data[0,2:14]/data[0,2:14]), True),label='power-fit', color='k')
+
+plt.ylabel('%-Sieve / %-pyDGS', fontsize=18)
+plt.xlabel('Grain size (mm)', fontsize=18)
+plt.xscale('log'); plt.yscale('log')
+plt.legend(bbox_to_anchor=(1,1), loc="upper left")
+plt.show()
+# plt.subplot(1,2,2)
 GrainSz =  np.array([0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 
          0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4,
          0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4,

@@ -6,7 +6,7 @@ from matplotlib.pyplot import cm
 GrainSz = np.array([0, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8])
 
 
-dgs_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Uncorrected/Uncorrected_Locs_MeanTransf.csv'))
+dgs_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Uncorrected/Uncorrected_Line_2_MeanTransf.csv'))
 sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Sieve/Percentage_Sieve.csv'))
 sieve_open = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
 
@@ -14,9 +14,9 @@ color = cm.tab20c(np.linspace(0, 1, len(sieve_data)))
 
 
 Density_Sand = 0.00165 # (g/mm**3)
-Resolution = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Resolution_Locs.csv'))[:,1]
-STdev = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Uncorrected/Uncorrected_Locs_StDevTransf.csv'))
-Area_Fraction = []; Grain_Area = []; Grain_Volume = []; Grain_Mass = []; Mass_Fraction = np.zeros((9,14))
+Resolution = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Resolution_All.csv'))[:,1]
+STdev = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Uncorrected/Uncorrected_Line_2_StDevTransf.csv'))
+Area_Fraction = []; Grain_Area = []; Grain_Volume = []; Grain_Mass = []; Mass_Fraction = np.zeros((62,14))
 
 Grain_Area = np.pi*(GrainSz/2)**2
 
@@ -70,26 +70,26 @@ for i in range(len(Resolution)):
             elif GrainSz[j] == 0.125 or GrainSz[j] == 0.063:
                 Grain_Volume.append((np.pi/6)*(GrainSz[j])*GrainSz[j]*1/STdev[i, j+1]*GrainSz[j]*0.01)
             elif GrainSz[j] == 0.250:
-                Grain_Volume.append((np.pi/6)*(GrainSz[j])*GrainSz[j]*1/STdev[i, j+1]*GrainSz[j]*0.1)
+                Grain_Volume.append((np.pi/6)*(GrainSz[j])*GrainSz[j]*1/STdev[i, j+1]*GrainSz[j]*0.01)
             else:
                 Grain_Volume.append((np.pi/6)*(GrainSz[j])*GrainSz[j]*(1/STdev[i, j+1])*GrainSz[j]*10)
 
         elif STdev[i, j+1] >= 0.5 and STdev[i, j+1] < 0.8:
             if  GrainSz[j] == 0.5:
-                Grain_Volume.append((np.pi/6)*(GrainSz[j])*GrainSz[j]*STdev[i, j+1]*GrainSz[j]*0.001)
+                Grain_Volume.append((np.pi/6)*(GrainSz[j])*GrainSz[j]*STdev[i, j+1]*GrainSz[j]*0.00001)
             elif  GrainSz[j] == 1:
                 Grain_Volume.append((np.pi/6)*(GrainSz[j])*GrainSz[j]*STdev[i, j+1]*GrainSz[j]*0.0001)
             elif  GrainSz[j] == 0.180:
-                Grain_Volume.append((np.pi/6)*(GrainSz[j])*GrainSz[j]*1/STdev[i, j+1]*GrainSz[j]*0.25)
+                Grain_Volume.append((np.pi/6)*(GrainSz[j])*GrainSz[j]*1/STdev[i, j+1]*GrainSz[j]*0.025)
 
             else:
                 Grain_Volume.append((np.pi/6)*(GrainSz[j])*GrainSz[j]*STdev[i, j+1]*GrainSz[j]*0.0075)
 
         else:
             if  GrainSz[j] == 0.5:
-                Grain_Volume.append((np.pi/6)*(GrainSz[j])*GrainSz[j]*STdev[i, j+1]*GrainSz[j]*0.0001)
+                Grain_Volume.append((np.pi/6)*(GrainSz[j])*GrainSz[j]*STdev[i, j+1]*GrainSz[j]*0.000001)
             elif  GrainSz[j] == 0.71:
-                Grain_Volume.append((np.pi/6)*(GrainSz[j])*GrainSz[j]*1/STdev[i, j+1]*GrainSz[j]*0.00000001)
+                Grain_Volume.append((np.pi/6)*(GrainSz[j])*GrainSz[j]*1/STdev[i, j+1]*GrainSz[j]*0.000001)
 
             else:
                 Grain_Volume.append((np.pi/6)*(GrainSz[j])*GrainSz[j]*1/STdev[i, j+1]*GrainSz[j]*0.000001)
@@ -104,7 +104,7 @@ for i in range(len(Resolution)):
     Mass_Fraction[i,:] = (Mass_Fraction[i,:] / np.nansum(Mass_Fraction[i,:])) * 100
 
 df = pd.DataFrame(Mass_Fraction)
-# df.to_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Corrected/Corrected_Locs.csv')
+# df.to_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Corrected/Corrected_Line_2.csv')
 
 
 plt.subplot(2,1,1)
@@ -115,9 +115,9 @@ plt.legend(bbox_to_anchor=(1,1), loc="upper left")
 plt.xscale("log")
 plt.hlines(0, 0.063, 8, color='k')
 plt.ylabel('%-Sieve - %-pyDGS ', fontsize=20)
+plt.yticks(fontsize=15);plt.xticks(fontsize=15)
 
-
-error = sieve_data[:34, 2:]- Mass_Fraction[:34, 1:]
+error = sieve_data[:9, 2:]- Mass_Fraction[:9, 1:]
 std = np.std(error.astype(np.float64), axis=0)
 
 sieve_open = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
@@ -128,5 +128,5 @@ plt.hlines(0, 0.063, 8, color='k')
 plt.xscale('log')
 plt.ylabel('Mean Absolute Error', fontsize=20)
 plt.xlabel('Grain size (mm)', fontsize=20)
-
+plt.yticks(fontsize=15);plt.xticks(fontsize=15)
 plt.show()

@@ -30,7 +30,7 @@ def Percentage2Percentile(Percentage):
     Percentile_cor = Percentile_cor[::-1]
     
     return Percentile_cor
-data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/01_12_22_Egmond/Statistics/Statistics_Stats_Line_2.csv'))
+data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Statistics/Statistics_Stats_Line_2.csv'))
 
 plt.subplot(3,1,1)
 for i in range(len(data)):
@@ -54,7 +54,7 @@ plt.ylabel('Grain size (mm)', fontsize=20)
 plt.show()
 
 plt.subplot(4,1,1)
-data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/01_12_22_Egmond/Uncorrected/UncorrectedPercentage_Line_2.csv'))
+data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Uncorrected/UncorrectedPercentage_Line_2.csv'))
 sieve_open = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
 for i in range(len(data)):
     plt.plot(sieve_open, data[i,2:])

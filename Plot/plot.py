@@ -1,7 +1,9 @@
-from Imports.Import_Modules import * 
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 
-data_cor = pd.read_csv('Output data/08_07_22/Percentile_corrected/Percentiles_Location_7.csv')
-data_og = pd.read_csv('Output data/08_07_22/Percentile_og/Percentiles_Location_7.csv')
+data_cor = pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/08_07_22/Percentile_corrected/Percentiles_Location_7.csv')
+data_og = pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/08_07_22/Percentile_og/Percentiles_Location_7.csv')
 data_og = np.array(data_og)
 data_cor = np.array(data_cor)
 

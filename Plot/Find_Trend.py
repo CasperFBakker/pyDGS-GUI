@@ -1,5 +1,8 @@
-from Imports.Import_Modules import * 
-
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from  matplotlib.pyplot import cm
+import math
 def power_fit(x, y):
   
   coefs = np.polyfit(np.log(x),np.log(y),1)

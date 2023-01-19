@@ -11,3 +11,5 @@ for i in [0,1,2,3,5]:
 plt.legend(['h=9.22cm', 'h=17.3cm', 'h=26.9cm', 'h=37.4cm',  'h=56.6cm',])
 plt.xscale('log')
 plt.show()
+
+

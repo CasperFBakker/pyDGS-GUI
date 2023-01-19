@@ -93,11 +93,32 @@ for i in range(len(Resolution)):
 
     Mass_Fraction[i,:] = (Mass_Fraction[i,:] / np.nansum(Mass_Fraction[i,:])) * 100
 
-print(Mass_Fraction)
 df = pd.DataFrame(Mass_Fraction)
-df.to_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Mobile/Corrected/Corrected_R10Inb.csv')
+# df.to_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Mobile/Corrected/Corrected_R10Inb.csv')
+
+plt.subplot(2,1,1)
+sieve_open = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
+for i in range(len(sieve_data)):
+    plt.scatter(sieve_open, ( sieve_data[i,2:] - Mass_Fraction[i,1:] ), color=color[i], label= sieve_data[i,0])
+plt.legend(bbox_to_anchor=(1,1), loc="upper left")
+plt.xscale("log")
+plt.hlines(0, 0.063, 8, color='k')
+plt.ylabel('%-Sieve - %-pyDGS ', fontsize=20)
 
 
+error = sieve_data[:34, 2:]- Mass_Fraction[:34, 1:]
+std = np.std(error.astype(np.float64), axis=0)
+
+sieve_open = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
+plt.subplot(2,1,2)
+
+plt.errorbar(x=sieve_open, y=np.mean(error, axis=0), yerr=std, capsize=3)
+plt.hlines(0, 0.063, 8, color='k')
+plt.xscale('log')
+plt.ylabel('Mean Absolute Error', fontsize=20)
+plt.xlabel('Grain size (mm)', fontsize=20)
+
+plt.show()
 
 #__________________________________________________________________________________________________________________________________________________________________________
 #==========================================================================================================================================================================

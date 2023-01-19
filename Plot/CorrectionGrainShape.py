@@ -17,7 +17,7 @@ def MAE(Sieve_vals, DGS_vals):
     return meanAbsErr
 
 
-dgs_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Statistics/Statistics_Locs_NewMethod.csv'))
+dgs_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Statistics/Statistics_NewMethod.csv'))
 sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Sieve/Statistics/Statistics_Percentage_Sieve.csv'))
 
 plt.scatter(sieve_data[:,1:]*100, dgs_data[:,1:]*100)

@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-dgs_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Mobile/Uncorrected/UncorrectedPercentage_All.csv'))
-sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Sieve/Percentage_Sieve.csv'))
+dgs_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Mobile/Uncorrected/UncorrectedPercentage_All.csv'))
+sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Sieve/Percentage_Sieve.csv'))
 error = sieve_data[:34, 2:]- dgs_data[:34, 2:]
 
 sieve_open = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
@@ -27,7 +27,7 @@ plt.xlabel('Grain size (mm)', fontsize=20)
 plt.xscale('log')
 plt.show()
 
-dgs_data_cor = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Mobile/Corrected/Corrected_All_PercentTransf.csv'))
+dgs_data_cor = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Mobile/Corrected/Corrected_All_PercentTransf.csv'))
 
 sieve_open = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
 error = sieve_data[:34, 2:]- dgs_data_cor[:34, 2:]
@@ -51,7 +51,7 @@ plt.show()
 
 
 Density_Sand = 0.00165 # (g/mm**3)
-Resolution = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS GUI/Output data/26_10_22/Resolution_All.csv'))[:,1]
+Resolution = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Resolution_All.csv'))[:,1]
 GrainSz = np.array([0, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8])
 
 
