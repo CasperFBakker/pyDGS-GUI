@@ -17,14 +17,14 @@ def MAE(Sieve_vals, DGS_vals):
     return meanAbsErr
 
 
-dgs_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Mobile/Statistics/Statistics_Stats_GrainShape_Sort.csv'))
-sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Sieve/Statistics/Statistics_Sieve_Sort.csv'))
+dgs_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Statistics/Statistics_NewMethod.csv'))
+sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Sieve/Statistics/Statistics_Percentage_Sieve.csv'))
 
 
 plt.subplot(2,3,1)
 plt.scatter(sieve_data[:,2], dgs_data[:,2])
 plt.plot(np.arange(0,100), color='k', linestyle='--')
-plt.xlim(0.15,0.50); plt.ylim(0.15,0.50); 
+# plt.xlim(0.15,0.50); plt.ylim(0.15,0.50); 
 print('D10: ', ((RMSE(sieve_data[:,2], dgs_data[:,2]))))
 print('D10: ', ((RMSE(sieve_data[:,2], dgs_data[:,2]))/(max(sieve_data[:,2]) - min(sieve_data[:,2]))*100))
 print('D10: ', ((MAE(sieve_data[:,2], dgs_data[:,2]))))
@@ -38,7 +38,7 @@ print('D16: ', ((RMSE(sieve_data[:,3], dgs_data[:,3]))/(max(sieve_data[:,3]) - m
 print('D16: ', ((MAE(sieve_data[:,3], dgs_data[:,3]))))
 print('D16: ', ((MAE(sieve_data[:,3], dgs_data[:,3]))/(max(sieve_data[:,3]) - min(sieve_data[:,3]))*100))
 plt.plot(np.arange(0,100), color='k', linestyle='--')
-plt.xlim(0.20,0.55); plt.ylim(0.20,0.55); 
+# plt.xlim(0.20,0.55); plt.ylim(0.20,0.55); 
 plt.title('16th', fontsize=16)
 
 plt.subplot(2,3,3)
@@ -48,7 +48,7 @@ print('D25: ', ((RMSE(sieve_data[:,4], dgs_data[:,4]))/(max(sieve_data[:,4]) - m
 print('D25: ', ((MAE(sieve_data[:,4], dgs_data[:,4]))))
 print('D25: ', ((MAE(sieve_data[:,4], dgs_data[:,4]))/(max(sieve_data[:,4]) - min(sieve_data[:,4]))*100))
 plt.plot(np.arange(0,100), color='k', linestyle='--')
-plt.xlim(0.25, 0.60); plt.ylim(0.25, 0.60)
+# plt.xlim(0.25, 0.60); plt.ylim(0.25, 0.60)
 plt.title('25th', fontsize=16)
 
 plt.subplot(2,3,4)
@@ -58,7 +58,7 @@ print('D50: ', ((RMSE(sieve_data[:,6], dgs_data[:,6]))/(max(sieve_data[:,6]) - m
 print('D50: ', ((MAE(sieve_data[:,6], dgs_data[:,6]))/(max(sieve_data[:,6]))))
 print('D50: ', ((MAE(sieve_data[:,6], dgs_data[:,6]))/(max(sieve_data[:,6]) - min(sieve_data[:,6]))*100))
 plt.plot(np.arange(0,100), color='k', linestyle='--')
-plt.xlim(0.35, 1.5); plt.ylim(0.35, 1.5)
+# plt.xlim(0.35, 1.5); plt.ylim(0.35, 1.5)
 plt.title('50th', fontsize=16)
 plt.xlabel('Measured (mm)', fontsize=18); plt.ylabel('Estimated (mm)', fontsize=18)
 
@@ -69,7 +69,7 @@ print('D84: ', ((RMSE(sieve_data[:,8], dgs_data[:,8]))/(max(sieve_data[:,8]) - m
 print('D84: ', ((MAE(sieve_data[:,8], dgs_data[:,8]))))
 print('D84: ', ((MAE(sieve_data[:,8], dgs_data[:,8]))/(max(sieve_data[:,8]) - min(sieve_data[:,8]))*100))
 plt.plot(np.arange(0,100), color='k', linestyle='--')
-plt.xlim(0.6, 4.5); plt.ylim(0.6, 4.5)
+# plt.xlim(0.6, 4.5); plt.ylim(0.6, 4.5)
 plt.title('84th', fontsize=16)
 
 plt.subplot(2,3,6)
@@ -79,7 +79,7 @@ print('D90: ', ((RMSE(sieve_data[:,9], dgs_data[:,9]))/(max(sieve_data[:,9]) - m
 print('D90: ', ((MAE(sieve_data[:,9], dgs_data[:,9]))))
 print('D90: ', ((MAE(sieve_data[:,9], dgs_data[:,9]))/(max(sieve_data[:,9]) - min(sieve_data[:,9]))*100))
 plt.plot(np.arange(0,100), color='k', linestyle='--')
-plt.xlim(0.95, 7); plt.ylim(0.95, 7)
+# plt.xlim(0.95, 7); plt.ylim(0.95, 7)
 plt.title('90th', fontsize=16)
 
 plt.show()
