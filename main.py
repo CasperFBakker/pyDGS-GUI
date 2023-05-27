@@ -86,7 +86,7 @@ class GUI(object):
         self.CoinTypeLabel = ttk.Label(tab_1_left_frame_2, text='Coin type:')
         self.CoinTypeLabel.grid(row=0, column=0, sticky="nsew")
         self.coin_bank = {"Select Coin Type": 0,"2 Euro": '2_Euro', "1 Euro": '1_Euro', "50 Cent": '50_Cent',
-                          "20 Cent": '20_Cent', "10 Cent": '10_Cent', "5 Cent": '5_Cent'}
+                          "20 Cent": '20_Cent', "10 Cent": '10_Cent', "5 Cent": '5_Cent', "US Quarter": 'US_Quarter'}
         self.CoinVar = StringVar()
         self.CoinType = ttk.OptionMenu(tab_1_left_frame_2, self.CoinVar,  *self.coin_bank, command = lambda x: self.Input.GetCoinType(self.coin_bank, self.CoinVar))
         self.CoinType.grid(row=1, column=0, pady=20, sticky="nsew")

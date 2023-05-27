@@ -7,11 +7,11 @@ class Store_Img_data():
         
     def Scale_Img(self, img_path, r_final, coin_type):
         coin_vault = {"2_Euro": 25.75, "1_Euro": 23.25, "50_Cent": 24.25,
-                    "20_Cent": 22.25, "10_Cent": 19.75, "5_Cent": 21.25}
+                    "20_Cent": 22.25, "10_Cent": 19.75, "5_Cent": 21.25, "US_Quarter":24.257}
 
         dia_coin_pix = r_final * 2 
         coin_dia_mm = coin_vault[coin_type]
-        size_pixel = coin_dia_mm / dia_coin_pix # pixel size in mm
+        size_pixel = coin_dia_mm / dia_coin_pix # pixel size in mm  
 
         image = cv2.imread(img_path, cv2.IMREAD_COLOR) # Read the image 
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) 
