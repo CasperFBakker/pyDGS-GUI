@@ -39,11 +39,11 @@ def Percentage2Percentile(Percentage):
     return Percentile_cor
 
 dir_name = 'Line_2'
-Output_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Statistics/'
+Output_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/21_04_23/Statistics/'
 
-ImageName = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Corrected/Corrected_Line_2.csv'))
+ImageName = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/21_04_23/Corrected/Corrected_21_04_23.csv'))
 
-data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/01_12_22_Egmond/Corrected/Corrected_Line_2.csv', index_col=0), dtype='float64')
+data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/21_04_23/Corrected/Corrected_21_04_23.csv', index_col=0), dtype='float64')
 
 for i in range(len(data)):
     data[i,:] = Percentage2Percentile(data[i,:])

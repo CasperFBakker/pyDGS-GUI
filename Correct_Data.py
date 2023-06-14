@@ -16,11 +16,11 @@ def Setup_Dir(Date, SubFolder=False):
         OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/' + Date + '/' +  SubFolder + '/Corrected/'
         OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/' + Date + '/' + SubFolder + '/Uncorrected/'
     else:
-        Photo_Dir = '/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/' + Date + '/'
-        ImageData_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/Image_data/' + Date + '/'
-        OutputData_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/' + Date + '/'
-        OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/' + Date + '/Corrected/'
-        OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/' + Date + '/Uncorrected/'
+        Photo_Dir = '/home/casper/Documents/Aardwetenschappen/MSc Thesis/Photo/' + Date
+        ImageData_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/Image_data/' + Date
+        OutputData_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/' + Date
+        OutputCorrected_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/' + Date + 'Corrected/'
+        OutputOriginal_Dir = '/home/casper/Documents/Python/pyDGS-GUI/Output data/' + Date + 'Uncorrected/'
     return Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir
 # =========================================================
 def GetImageRes(img_path):
@@ -170,20 +170,20 @@ def Store_Percentage(path_of_the_directory, Image_Name, Percentage, Description)
             else:
                 temp.to_csv(OutputOriginal_Dir + "UncorrectedPercentage_" + dir_name + ".csv", index=False)
 # =========================================================
-Angles = np.array([30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330, 360])
+Angles = np.array([360]) #30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330, 360
 input_dir = False
 
 while input_dir == False:
     input_directory = input('Type the name of the directory: ')
 
     if input_directory.endswith("/"):
-        Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir = Setup_Dir(Date, SubFolder='Mobile') #, SubFolder='Mobile'
+        Photo_Dir, ImageData_Dir, OutputData_Dir, OutputCorrected_Dir, OutputOriginal_Dir = Setup_Dir(input_directory, SubFolder=False) #, SubFolder='Mobile'
         input_dir = True
     else:
         print('Please end the directory name with: "/" ')
         input_dir = False
 
-path_of_the_directory = os.path.join(Photo_Dir, input_directory)
+path_of_the_directory = os.path.join(Photo_Dir)
 dir_path = os.path.dirname(path_of_the_directory)
 dir_name = os.path.basename(dir_path)
 print('The working directory will be: ', path_of_the_directory)

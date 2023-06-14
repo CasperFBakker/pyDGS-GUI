@@ -6,7 +6,7 @@ from matplotlib.pyplot import cm
 GrainSz = np.array([0, 0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8])
 
 
-dgs_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Mobile/Uncorrected/Uncorrected_R10Inb_MeanTransf.csv'))
+dgs_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/21_04_23/Uncorrected/UncorrectedPercentage_21_04_23_MeanTransf.csv'))
 sieve_data = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Sieve/Percentage_Sieve_Sort.csv'))
 sieve_open = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
 
@@ -14,9 +14,9 @@ color = cm.tab20c(np.linspace(0, 1, len(sieve_data)))
 
 
 Density_Sand = 0.00165 # (g/mm**3)
-Resolution = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/Image_data/26_10_22/Mobile/data_R10.csv'))[:,1]
-STdev = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Mobile/Uncorrected/Uncorrected_R10Inb_StDevTransf.csv'))
-Area_Fraction = []; Grain_Area = []; Grain_Volume = []; Grain_Mass = []; Mass_Fraction = np.zeros((21,14))
+Resolution = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/Image_data/data_21_04_23.csv'))[:,1]
+STdev = np.array(pd.read_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/21_04_23/Uncorrected/UncorrectedPercentage_21_04_23_StDevTransf.csv'))
+Area_Fraction = []; Grain_Area = []; Grain_Volume = []; Grain_Mass = []; Mass_Fraction = np.zeros((336,14))
 
 Grain_Area = np.pi*(GrainSz/2)**2
 
@@ -94,31 +94,31 @@ for i in range(len(Resolution)):
     Mass_Fraction[i,:] = (Mass_Fraction[i,:] / np.nansum(Mass_Fraction[i,:])) * 100
 
 df = pd.DataFrame(Mass_Fraction)
-# df.to_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/26_10_22/Mobile/Corrected/Corrected_R10Inb.csv')
+df.to_csv('/home/casper/Documents/Python/pyDGS-GUI/Output data/21_04_23/Corrected/Corrected_21_04_23.csv')
 
-plt.subplot(2,1,1)
-sieve_open = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
-for i in range(len(sieve_data)):
-    plt.scatter(sieve_open, ( sieve_data[i,2:] - Mass_Fraction[i,1:] ), color=color[i], label= sieve_data[i,0])
-plt.legend(bbox_to_anchor=(1,1), loc="upper left")
-plt.xscale("log")
-plt.hlines(0, 0.063, 8, color='k')
-plt.ylabel('%-Sieve - %-pyDGS ', fontsize=20)
+# plt.subplot(2,1,1)
+# sieve_open = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
+# for i in range(len(sieve_data)):
+#     plt.scatter(sieve_open, ( sieve_data[i,2:] - Mass_Fraction[i,1:] ), color=color[i], label= sieve_data[i,0])
+# plt.legend(bbox_to_anchor=(1,1), loc="upper left")
+# plt.xscale("log")
+# plt.hlines(0, 0.063, 8, color='k')
+# plt.ylabel('%-Sieve - %-pyDGS ', fontsize=20)
 
 
-error = sieve_data[:34, 2:]- Mass_Fraction[:34, 1:]
-std = np.std(error.astype(np.float64), axis=0)
+# error = sieve_data[:34, 2:]- Mass_Fraction[:34, 1:]
+# std = np.std(error.astype(np.float64), axis=0)
 
-sieve_open = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
-plt.subplot(2,1,2)
+# sieve_open = [0.063, 0.125, 0.180, 0.250, 0.300, 0.355, 0.425, 0.500, 0.710, 1, 2, 4, 8]
+# plt.subplot(2,1,2)
 
-plt.errorbar(x=sieve_open, y=np.mean(error, axis=0), yerr=std, capsize=3)
-plt.hlines(0, 0.063, 8, color='k')
-plt.xscale('log')
-plt.ylabel('Mean Absolute Error', fontsize=20)
-plt.xlabel('Grain size (mm)', fontsize=20)
+# plt.errorbar(x=sieve_open, y=np.mean(error, axis=0), yerr=std, capsize=3)
+# plt.hlines(0, 0.063, 8, color='k')
+# plt.xscale('log')
+# plt.ylabel('Mean Absolute Error', fontsize=20)
+# plt.xlabel('Grain size (mm)', fontsize=20)
 
-plt.show()
+# plt.show()
 
 #__________________________________________________________________________________________________________________________________________________________________________
 #==========================================================================================================================================================================
